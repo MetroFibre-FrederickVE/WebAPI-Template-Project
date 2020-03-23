@@ -1,0 +1,9 @@
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.csprojAssemblyReference.cache
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\obj\Debug\netcoreapp3.1\staticwebassets\Template-WebAPI.StaticWebAssets.Manifest.cache
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\obj\Debug\netcoreapp3.1\staticwebassets\Template-WebAPI.StaticWebAssets.xml
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.AssemblyInfoInputs.cache
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.AssemblyInfo.cs
+C:\Users\TKK\source\repos\Template-WebAPI\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.RazorTargetAssemblyInfo.cache

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Template_WebAPI.Interfaces;
+using Template_WebAPI.Models;
 
 namespace Template_WebAPI.Repository
 {
-    public class TemplateRepository : ITemplateRepository
+    public class TemplateRepository : BaseRepository<Templates>, ITemplateRepository
     {
-        public TemplateRepository()
+        public TemplateRepository(IMongoContext context) : base(context)
         {
 
         }

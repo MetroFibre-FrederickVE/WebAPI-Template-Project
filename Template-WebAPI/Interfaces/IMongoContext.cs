@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Template_WebAPI.Interfaces
 {
-    interface IMongoContext
+    public interface IMongoContext
     {
         IMongoCollection<T> GetCollection<T>(string name);
     }

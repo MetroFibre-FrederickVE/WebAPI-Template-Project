@@ -18,11 +18,61 @@ namespace Template_WebAPI.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult<IEnumerable<Templates>>> Get()
+        {
+            var templates = await _templateRepository.GetAll();
+            return Ok(templates);
+        }
 
-        [HttpPut]
+        [HttpGet("{id:length(24)}", Name = "GetTemplate")]
+        public async Task<ActionResult<Templates>> Get(string id)
+        {
+            var template = await _templateRepository.GetById(id);
+
+            if (template == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(template);
+        }
+
+        [HttpPut("{id:length(24)}")]
+        public async Task<IActionResult> Update(Templates templateIn, string id)
+        {
+            var template = await _templateRepository.GetById(id);
+
+            if (template == null)
+            {
+                return NotFound();
+            }
+
+            await _templateRepository.Update(templateIn, id);
+
+            return Ok(templateIn);
+        }
 
         [HttpPost]
+        public async Task<ActionResult<Templates>> Create(Templates template)
+        {
+            await _templateRepository.Add(template);
 
-        [HttpDelete]
+            return CreatedAtRoute("GetTemplate", new { id = template.Id.ToString() }, template);
+        }
+
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var template = await _templateRepository.GetById(id);
+
+            if (template == null)
+            {
+                return NotFound();
+            }
+
+            _templateRepository.Remove(template.Id);
+
+            return NoContent();
+        }
     }
 }

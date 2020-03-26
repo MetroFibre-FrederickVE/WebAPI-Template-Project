@@ -44,10 +44,10 @@ namespace Template_WebAPI.Repository
             return await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
         }
 
-        public void Remove(string id)
+        public async Task Remove(string id)
         {
             var objectId = new ObjectId(id);
-            _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
+            await _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
         }
 
         public async Task Update(TEntity obj, string id)

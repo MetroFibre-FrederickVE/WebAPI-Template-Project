@@ -70,7 +70,7 @@ namespace Template_WebAPI.Controllers
                 return NotFound();
             }
 
-            _templateRepository.Remove(template.Id);
+            await _templateRepository.Remove(template.Id);
 
             return NoContent();
         }

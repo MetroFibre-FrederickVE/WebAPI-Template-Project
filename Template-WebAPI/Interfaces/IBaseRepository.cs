@@ -12,6 +12,6 @@ namespace Template_WebAPI.Interfaces
         Task<TEntity> GetById(string id);
         Task Add(TEntity obj);
         Task Update(TEntity obj, string id);
-        void Remove(string id);
+        Task Remove(string id);
     }
 }

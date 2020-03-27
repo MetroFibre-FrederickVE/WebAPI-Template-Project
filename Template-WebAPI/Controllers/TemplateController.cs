@@ -3,6 +3,7 @@ using Template_WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Template_WebAPI.Repository;
+using System.Text.RegularExpressions;
 
 namespace Template_WebAPI.Controllers
 {
@@ -11,6 +12,7 @@ namespace Template_WebAPI.Controllers
     public class TemplateController : ControllerBase
     {
         private readonly ITemplateRepository _templateRepository;
+        private static readonly Regex regex = new Regex("^[a-zA-Z0-9]*$");
 
         public TemplateController(ITemplateRepository templateRepository)
         {

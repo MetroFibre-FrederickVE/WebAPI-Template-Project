@@ -19,7 +19,6 @@ namespace Template_WebAPI.Repository
             _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             var all = await _dbCollection.FindAsync(Builders<TEntity>.Filter.Empty);

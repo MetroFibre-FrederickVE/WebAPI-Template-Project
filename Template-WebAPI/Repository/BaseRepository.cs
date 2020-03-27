@@ -19,15 +19,6 @@ namespace Template_WebAPI.Repository
             _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public async Task Add(TEntity obj)
-        {
-            if (obj == null)
-            {
-                throw new ArgumentNullException(typeof(TEntity).Name + " object is null");
-            }
-            _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
-            await _dbCollection.InsertOneAsync(obj);
-        }
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
@@ -44,16 +35,25 @@ namespace Template_WebAPI.Repository
             return await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
         }
 
-        public async Task Remove(string id)
+        public async Task Add(TEntity obj)
         {
-            var objectId = new ObjectId(id);
-            await _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
+            if (obj == null)
+            {
+                throw new ArgumentNullException(typeof(TEntity).Name + " object is null");
+            }
+            _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
+            await _dbCollection.InsertOneAsync(obj);
         }
 
         public async Task Update(TEntity obj, string id)
         {
             var objectId = new ObjectId(id);
             await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
+        }
+        public async Task Remove(string id)
+        {
+            var objectId = new ObjectId(id);
+            await _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
         }
     }
 }

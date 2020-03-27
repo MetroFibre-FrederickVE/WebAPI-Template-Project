@@ -6,13 +6,13 @@ using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers
 {
-    [Route("api/templates/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class TemplateControllers : ControllerBase
+    public class TemplateController : ControllerBase
     {
         private readonly ITemplateRepository _templateRepository;
 
-        public TemplateControllers(ITemplateRepository templateRepository)
+        public TemplateController(ITemplateRepository templateRepository)
         {
             _templateRepository = templateRepository;
         }

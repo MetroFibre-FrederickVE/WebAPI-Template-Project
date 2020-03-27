@@ -8,7 +8,7 @@ namespace Template_WebAPI.DbContexts
     {
         private IMongoDatabase _db { get; set; }
         private MongoClient _mongoClient { get; set; }
-
+        public IClientSessionHandle Session { get; set; }
         private readonly IConfiguration _configuration;
 
         public MongoContext(IConfiguration configuration)
@@ -16,8 +16,8 @@ namespace Template_WebAPI.DbContexts
             _configuration = configuration;
 
             // Configuration to be injected later
-            _mongoClient = new MongoClient(_configuration[""]);
-            _db = _mongoClient.GetDatabase(_configuration[""]);
+            _mongoClient = new MongoClient(_configuration["TemplateDatabaseSettings:ConnectionString"]); // Test DB injected
+            _db = _mongoClient.GetDatabase(_configuration["TemplateDatabaseSettings:DatabaseName"]);
         }
 
         public IMongoCollection<T> GetCollection<T>(string name)

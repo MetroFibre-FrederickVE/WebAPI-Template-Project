@@ -26,5 +26,8 @@ namespace Template_WebAPI.Models
         [RegularExpression("^([0-9])*$", ErrorMessage = "Please ensure that the {0} field is a numeral.")]
         [Range(0, 9, ErrorMessage = "Please select an option within : 0 - 9")]
         public SensorId SensorId { get; set; }
+
+        [BsonElement("ProjectId")]
+        public string[] ProjectId { get; set; }
     }
 }

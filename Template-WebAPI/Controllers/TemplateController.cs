@@ -18,14 +18,14 @@ namespace Template_WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Templates>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<Template>>> GetAsync()
         {
             var templates = await _templateRepository.GetAllAsync();
             return Ok(templates);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetTemplate")]
-        public async Task<ActionResult<Templates>> GetAsync(string id)
+        public async Task<ActionResult<Template>> GetAsync(string id)
         {
             var template = await _templateRepository.GetByIdAsync(id);
 
@@ -38,7 +38,7 @@ namespace Template_WebAPI.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> UpdateAsync(Templates templateIn, string id)
+        public async Task<IActionResult> UpdateAsync(Template templateIn, string id)
         {
             var template = await _templateRepository.GetByIdAsync(id);
 
@@ -53,7 +53,7 @@ namespace Template_WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Templates>> CreateAsync(Templates template)
+        public async Task<ActionResult<Template>> CreateAsync(Template template)
         {
             await _templateRepository.AddAsync(template);
 

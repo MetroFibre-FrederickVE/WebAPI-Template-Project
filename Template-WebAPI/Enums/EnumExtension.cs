@@ -5,7 +5,7 @@ using Template_WebAPI.Interfaces;
 
 namespace Template_WebAPI.Enums
 {
-    public class EnumExtensions : IEnumExtensions
+    public class EnumExtension : IEnumExtension
     {
         public async Task<List<EnumValue>> GetValuesAsync<T>()
         {

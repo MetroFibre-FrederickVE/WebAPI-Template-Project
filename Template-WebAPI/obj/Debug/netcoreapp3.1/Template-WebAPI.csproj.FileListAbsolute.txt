@@ -17,7 +17,6 @@ C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\obj\Debug\netco
 C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.AssemblyInfoInputs.cache
 C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.AssemblyInfo.cs
 C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.RazorTargetAssemblyInfo.cache
-C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\obj\Debug\netcoreapp3.1\Template-WebAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\bin\Debug\netcoreapp3.1\Template-WebAPI.deps.json
 C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\bin\Debug\netcoreapp3.1\Template-WebAPI.runtimeconfig.json
 C:\Users\TKK\Documents\terracore-webapi-template\Template-WebAPI\bin\Debug\netcoreapp3.1\Template-WebAPI.runtimeconfig.dev.json

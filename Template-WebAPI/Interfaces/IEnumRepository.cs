@@ -2,7 +2,7 @@
 
 namespace Template_WebAPI.Interfaces
 {
-    public interface IEnumRepository : IEnumExtensions
+    public interface IEnumRepository : IEnumExtension
     {
 
     }

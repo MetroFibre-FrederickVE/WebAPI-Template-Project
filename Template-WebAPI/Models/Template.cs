@@ -6,7 +6,7 @@ using Template_WebAPI.Enums;
 
 namespace Template_WebAPI.Models
 {
-    public class Templates
+    public class Template
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -28,7 +28,7 @@ namespace Template_WebAPI.Models
         [EnumDataType(typeof(SensorId))]
         [RegularExpression("^([0-9])*$", ErrorMessage = "Please ensure that the {0} field is a numeral.")]
         [Range(0, 9, ErrorMessage = "Please select an option within : 0 - 9")]
-        public SensorId SensorId { get; set; }
+        public SensorId Sensor { get; set; }
 
         [BsonElement("ProjectId")]
         public string[] ProjectId { get; set; }

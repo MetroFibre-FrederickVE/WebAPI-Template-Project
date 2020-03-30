@@ -16,6 +16,7 @@ namespace Template_WebAPI.DbContexts
             _configuration = configuration;
 
             // Configuration to be injected later
+            // Currently using testable local DB
             _mongoClient = new MongoClient(_configuration["TemplateDatabaseSettings:ConnectionString"]); // Test DB injected
             _db = _mongoClient.GetDatabase(_configuration["TemplateDatabaseSettings:DatabaseName"]);
         }

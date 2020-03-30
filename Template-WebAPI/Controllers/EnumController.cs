@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Template_WebAPI.Enums;
 using Template_WebAPI.Interfaces;
-using Template_WebAPI.Models;
 
 namespace Template_WebAPI.Controllers
 {
@@ -10,11 +10,28 @@ namespace Template_WebAPI.Controllers
     [ApiController]
     public class EnumController : ControllerBase
     {
-        private readonly IEnumRepository _enumRepository;
 
-        public EnumController(IEnumRepository enumRepository)
+        private readonly IEnumRepository _enumExtensions;
+
+        public EnumController(IEnumRepository enumExtensions)
         {
-            _enumRepository = enumRepository;
+            _enumExtensions = enumExtensions;
+        }
+
+        [HttpGet]
+        [Route("sensorid")]
+        public async Task<ActionResult<IEnumerable<SensorId>>> GetSensorAsync()
+        {
+            var all = await _enumExtensions.GetValuesAsync<SensorId>();
+            return Ok(all);
+        }
+
+        [HttpGet]
+        [Route("processlevel")]
+        public async Task<ActionResult<IEnumerable<ProcessLevel>>> GetProcessAsync()
+        {
+            var all = await _enumExtensions.GetValuesAsync<ProcessLevel>();
+            return Ok(all);
         }
     }
 }

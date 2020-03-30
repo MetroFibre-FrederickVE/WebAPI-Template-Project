@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Template_WebAPI.Interfaces;
 
@@ -33,6 +34,12 @@ namespace Template_WebAPI.Repository
             _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
             return await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
         }
+
+        //public async Task<IEnumerable<TEntity>> GetAllEnum()
+        //{
+        //    var all = Enum.GetValues(typeof(TEntity)).Cast<TEntity>().ToList();
+        //    return all;
+        //}
 
         public async Task AddAsync(TEntity obj)
         {

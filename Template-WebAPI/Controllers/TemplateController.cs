@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Template_WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Template_WebAPI.Models;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers

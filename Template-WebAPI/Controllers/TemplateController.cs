@@ -18,16 +18,16 @@ namespace Template_WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Templates>>> Get()
+        public async Task<ActionResult<IEnumerable<Templates>>> GetAsync()
         {
-            var templates = await _templateRepository.GetAll();
+            var templates = await _templateRepository.GetAllAsync();
             return Ok(templates);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetTemplate")]
-        public async Task<ActionResult<Templates>> Get(string id)
+        public async Task<ActionResult<Templates>> GetAsync(string id)
         {
-            var template = await _templateRepository.GetById(id);
+            var template = await _templateRepository.GetByIdAsync(id);
 
             if (template == null)
             {
@@ -38,39 +38,39 @@ namespace Template_WebAPI.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(Templates templateIn, string id)
+        public async Task<IActionResult> UpdateAsync(Templates templateIn, string id)
         {
-            var template = await _templateRepository.GetById(id);
+            var template = await _templateRepository.GetByIdAsync(id);
 
             if (template == null)
             {
                 return NotFound();
             }
 
-            await _templateRepository.Update(templateIn, id);
+            await _templateRepository.UpdateAsync(templateIn, id);
 
             return Ok(templateIn);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Templates>> Create(Templates template)
+        public async Task<ActionResult<Templates>> CreateAsync(Templates template)
         {
-            await _templateRepository.Add(template);
+            await _templateRepository.AddAsync(template);
 
             return CreatedAtRoute("GetTemplate", new { id = template.Id.ToString() }, template);
         }
 
         [HttpDelete("{id:length(24)}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteAsync(string id)
         {
-            var template = await _templateRepository.GetById(id);
+            var template = await _templateRepository.GetByIdAsync(id);
 
             if (template == null)
             {
                 return NotFound();
             }
 
-            await _templateRepository.Remove(template.Id);
+            await _templateRepository.RemoveAsync(template.Id);
 
             return NoContent();
         }

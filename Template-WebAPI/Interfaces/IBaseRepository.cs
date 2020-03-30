@@ -6,10 +6,10 @@ namespace Template_WebAPI.Interfaces
     public interface IBaseRepository<TEntity>
         where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAll();
-        Task<TEntity> GetById(string id);
-        Task Add(TEntity obj);
-        Task Update(TEntity obj, string id);
-        Task Remove(string id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(string id);
+        Task AddAsync(TEntity obj);
+        Task UpdateAsync(TEntity obj, string id);
+        Task RemoveAsync(string id);
     }
 }

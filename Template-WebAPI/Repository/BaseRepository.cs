@@ -19,13 +19,13 @@ namespace Template_WebAPI.Repository
             _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             var all = await _dbCollection.FindAsync(Builders<TEntity>.Filter.Empty);
             return await all.ToListAsync();
         }
 
-        public async Task<TEntity> GetById(string id)
+        public async Task<TEntity> GetByIdAsync(string id)
         {
             var objectId = new ObjectId(id);
             FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq("_id", objectId);
@@ -34,7 +34,7 @@ namespace Template_WebAPI.Repository
             return await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
         }
 
-        public async Task Add(TEntity obj)
+        public async Task AddAsync(TEntity obj)
         {
             if (obj == null)
             {
@@ -44,12 +44,12 @@ namespace Template_WebAPI.Repository
             await _dbCollection.InsertOneAsync(obj);
         }
 
-        public async Task Update(TEntity obj, string id)
+        public async Task UpdateAsync(TEntity obj, string id)
         {
             var objectId = new ObjectId(id);
             await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
         }
-        public async Task Remove(string id)
+        public async Task RemoveAsync(string id)
         {
             var objectId = new ObjectId(id);
             await _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));

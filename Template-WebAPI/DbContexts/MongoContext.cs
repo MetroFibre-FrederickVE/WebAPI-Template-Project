@@ -15,9 +15,17 @@ namespace Template_WebAPI.DbContexts
         {
             _configuration = configuration;
 
+            // Connection Pooling settings
+            var settings = new MongoClientSettings();
+            settings.MaxConnectionPoolSize = 100;
+            settings.MinConnectionPoolSize = 1;
+            settings.MaxConnectionIdleTime = new TimeSpan(0, 1, 0);
+            settings.WaitQueueTimeout = new TimeSpan(0, 1, 0);
+            settings.Server = new MongoServerAddress(_configuration["TemplateDatabaseSettings:ConnectionString"]);
+
             // Configuration to be injected later
             // Currently using testable local DB
-            _mongoClient = new MongoClient(_configuration["TemplateDatabaseSettings:ConnectionString"]);
+            _mongoClient = new MongoClient(settings);
             _db = _mongoClient.GetDatabase(_configuration["TemplateDatabaseSettings:DatabaseName"]);
         }
 

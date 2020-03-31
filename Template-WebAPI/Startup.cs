@@ -23,9 +23,9 @@ namespace Template_WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddScoped<IMongoContext, MongoContext>();
-            services.AddScoped<ITemplateRepository, TemplateRepository>();
-            services.AddScoped<IEnumRepository, EnumRepository>();
+            services.AddSingleton<IMongoContext, MongoContext>();
+            services.AddSingleton<ITemplateRepository, TemplateRepository>();
+            services.AddSingleton<IEnumRepository, EnumRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

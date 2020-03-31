@@ -1,6 +1,6 @@
 ﻿namespace Template_WebAPI.Enums
 {
-    public enum SensorId
+    public enum Sensor
     {
         NotAvailable = 0,
         Rgb = 1,

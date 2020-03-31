@@ -1,5 +1,5 @@
 ﻿using Template_WebAPI.Interfaces;
-using Template_WebAPI.Models;
+using Template_WebAPI.Model;
 
 namespace Template_WebAPI.Repository
 {

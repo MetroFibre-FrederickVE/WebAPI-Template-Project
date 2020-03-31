@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Template_WebAPI.Enums;
 
-namespace Template_WebAPI.Models
+namespace Template_WebAPI.Model
 {
     public class Template
     {
@@ -25,10 +25,10 @@ namespace Template_WebAPI.Models
         public ProcessLevel ProcessLevel { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        [EnumDataType(typeof(SensorId))]
+        [EnumDataType(typeof(Sensor))]
         [RegularExpression("^([0-9])*$", ErrorMessage = "Please ensure that the {0} field is a numeral.")]
         [Range(0, 9, ErrorMessage = "Please select an option within : 0 - 9")]
-        public SensorId Sensor { get; set; }
+        public Sensor Sensor { get; set; }
 
         [BsonElement("ProjectId")]
         public string[] ProjectId { get; set; }

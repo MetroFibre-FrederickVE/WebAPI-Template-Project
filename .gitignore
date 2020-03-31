@@ -1,6 +1,16 @@
 
-# Created by https://www.gitignore.io/api/windows,visualstudio
-# Edit at https://www.gitignore.io/?templates=windows,visualstudio
+# Created by https://www.gitignore.io/api/windows,dotnetcore,visualstudio
+# Edit at https://www.gitignore.io/?templates=windows,dotnetcore,visualstudio
+
+### DotnetCore ###
+# .NET Core build folders
+/bin
+/obj
+
+# Common node modules locations
+/node_modules
+/wwwroot/node_modules
+
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -378,4 +388,4 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
-# End of https://www.gitignore.io/api/windows,visualstudio
+# End of https://www.gitignore.io/api/windows,dotnetcore,visualstudio

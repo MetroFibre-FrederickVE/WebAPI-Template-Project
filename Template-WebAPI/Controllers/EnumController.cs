@@ -20,9 +20,9 @@ namespace Template_WebAPI.Controllers
 
         [HttpGet]
         [Route("sensorid")]
-        public async Task<ActionResult<IEnumerable<SensorId>>> GetSensorAsync()
+        public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorAsync()
         {
-            var all = await _enumExtensions.GetValuesAsync<SensorId>();
+            var all = await _enumExtensions.GetValuesAsync<Sensor>();
             return Ok(all);
         }
 

@@ -36,12 +36,28 @@ namespace Template_WebAPI.Repository
 
         public async Task AddAsync(TEntity obj)
         {
-            if (obj == null)
+            if (obj == null) 
             {
                 throw new ArgumentNullException(typeof(TEntity).Name + " object is null");
             }
             _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
             await _dbCollection.InsertOneAsync(obj);
+        }
+
+        public async Task AddByIdAsync(TEntity obj, string templateId)
+        {
+            if (obj == null || templateId == null)
+            {
+                throw new ArgumentNullException(typeof(TEntity).Name + " object is null");
+            }
+            else if (templateId.Length != 24)
+            {
+                throw new ArgumentOutOfRangeException(typeof(TEntity).Name + " string has to be 24 characters.");
+            }
+
+            // Adds entry
+            var objectId = new ObjectId(templateId);
+            await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
         }
 
         public async Task UpdateAsync(TEntity obj, string id)

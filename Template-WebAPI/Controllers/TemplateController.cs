@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
+//using System.Web.Http;
 
 namespace Template_WebAPI.Controllers
 {
@@ -60,6 +61,15 @@ namespace Template_WebAPI.Controllers
             return CreatedAtRoute("GetTemplate", new { id = template.Id.ToString() }, template);
         }
 
+        [HttpPost]
+        [Route("{id}/project")]
+        public async Task<ActionResult<Template>> CreateAsync(Template template, [FromRoute] string id)
+        {
+            await _templateRepository.AddByIdAsync(template, id);
+
+            return CreatedAtRoute("GetTemplate", new { id = template.Id.ToString() }, template);
+        }
+
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
@@ -72,6 +82,14 @@ namespace Template_WebAPI.Controllers
 
             await _templateRepository.RemoveAsync(template.Id);
 
+            return NoContent();
+        }
+
+        // TODO
+        [HttpDelete("{id:length(24)}")]
+        [Route("api/[controller]/{templateId}/project/{projectId}")]
+        public async Task<IActionResult> DeleteAsync(string id, string projectId)
+        {
             return NoContent();
         }
     }

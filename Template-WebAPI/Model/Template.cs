@@ -20,13 +20,13 @@ namespace Template_WebAPI.Model
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [EnumDataType(typeof(ProcessLevel))]
-        [RegularExpression("^([0-7])*$", ErrorMessage = "Please ensure that the {0} field is a numeral.")]
+        [BsonRepresentation(BsonType.Int32)]
         [Range(0, 7, ErrorMessage = "Please select an option within : 0 - 7")]
         public ProcessLevel ProcessLevel { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [EnumDataType(typeof(Sensor))]
-        [RegularExpression("^([0-9])*$", ErrorMessage = "Please ensure that the {0} field is a numeral.")]
+        [BsonRepresentation(BsonType.Int32)]
         [Range(0, 9, ErrorMessage = "Please select an option within : 0 - 9")]
         public Sensor Sensor { get; set; }
 

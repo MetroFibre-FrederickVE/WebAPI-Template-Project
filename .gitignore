@@ -389,3 +389,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/windows,dotnetcore,visualstudio
+Template-WebAPI/Template-WebAPI.csproj

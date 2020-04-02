@@ -9,6 +9,7 @@ namespace Template_WebAPI.Interfaces
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(string id);
         Task AddAsync(TEntity obj);
+        Task AddByIdAsync(TEntity obj, string templateId);
         Task UpdateAsync(TEntity obj, string id);
         Task RemoveAsync(string id);
     }

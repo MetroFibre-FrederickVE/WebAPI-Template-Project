@@ -36,25 +36,6 @@ namespace Template_WebAPI.Repository
             var updateBuilder = Builders<Template>.Update.Pull("ProjectId", projectIdInput);
             
             await _dbCollection.UpdateOneAsync(idFilter, updateBuilder);
-
-            // ######################################################################################################################################
-
-            // Loop method to "Set" value, however the array remains unchanged outside of scope.
-            //var templates = await _dbCollection.Find(idFilter).ToListAsync();
-
-            //foreach (var template in templates)
-            //{
-            //    foreach (var projectIdArrayValue in template.ProjectId)
-            //    {
-            //        if (projectIdArrayValue == projectIdInput)
-            //        {
-            //            var indexOfItem = template.ProjectId.ToList().IndexOf(projectIdArrayValue);
-            //            template.ProjectId.SetValue("", indexOfItem); // Replaces string with empty but doesnt remove array entry
-            //            //template.ProjectId.RemoveAt(indexOfItem); // For if field type is a list
-            //        }
-            //    }
-
-            //}
         }
     }
 }

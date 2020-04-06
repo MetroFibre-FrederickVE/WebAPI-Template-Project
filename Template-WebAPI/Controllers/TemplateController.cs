@@ -85,7 +85,6 @@ namespace Template_WebAPI.Controllers
             return NoContent();
         }
 
-        // TODO
         [HttpDelete]
         [Route("{Id}/project/{projectId}")]
         public async Task<IActionResult> DeleteAsync(string id, string projectId)
@@ -99,7 +98,7 @@ namespace Template_WebAPI.Controllers
 
             await _templateRepository.RemoveProjectFromTemplate(template.Id, projectId);
 
-            return NoContent();
+            return Ok(await _templateRepository.GetByIdAsync(id));
         }
     }
 }

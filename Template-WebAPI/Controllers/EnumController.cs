@@ -22,16 +22,14 @@ namespace Template_WebAPI.Controllers
         [Route("sensor")]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorAsync()
         {
-            var all = await _enumExtensions.GetValuesAsync<Sensor>();
-            return Ok(all);
+            return Ok(await _enumExtensions.GetValuesAsync<Sensor>());
         }
 
         [HttpGet]
         [Route("processlevel")]
         public async Task<ActionResult<IEnumerable<ProcessLevel>>> GetProcessAsync()
         {
-            var all = await _enumExtensions.GetValuesAsync<ProcessLevel>();
-            return Ok(all);
+            return Ok(await _enumExtensions.GetValuesAsync<ProcessLevel>());
         }
     }
 }

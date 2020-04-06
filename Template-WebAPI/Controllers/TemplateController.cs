@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
-//using System.Web.Http;
 
 namespace Template_WebAPI.Controllers
 {

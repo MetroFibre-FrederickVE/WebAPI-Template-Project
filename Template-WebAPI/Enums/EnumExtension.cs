@@ -9,7 +9,7 @@ namespace Template_WebAPI.Enums
     {
         public async Task<List<EnumValue>> GetValuesAsync<T>()
         {
-            List<EnumValue> values = new List<EnumValue>();
+            var values = new List<EnumValue>();
             
             foreach (var itemType in Enum.GetValues(typeof(T)))
             {

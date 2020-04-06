@@ -50,6 +50,7 @@ namespace Template_WebAPI.Repository
             var objectId = new ObjectId(id);
             await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
         }
+
         public async Task RemoveAsync(string id)
         {
             var objectId = new ObjectId(id);

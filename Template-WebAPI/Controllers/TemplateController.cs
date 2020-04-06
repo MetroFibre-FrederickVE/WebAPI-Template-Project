@@ -65,7 +65,7 @@ namespace Template_WebAPI.Controllers
         [Route("{id}/project")]
         public async Task<ActionResult<Template>> CreateAsync(Template template, [FromRoute] string id)
         {
-            await _templateRepository.AddByIdAsync(template, id);
+            await _templateRepository.AddProjectByTemplateIdAsync(template, id);
 
             return CreatedAtRoute("GetTemplate", new { id = template.Id.ToString() }, template);
         }
@@ -86,10 +86,19 @@ namespace Template_WebAPI.Controllers
         }
 
         // TODO
-        [HttpDelete("{id:length(24)}")]
-        [Route("api/[controller]/{templateId}/project/{projectId}")]
+        [HttpDelete]
+        [Route("{Id}/project/{projectId}")]
         public async Task<IActionResult> DeleteAsync(string id, string projectId)
         {
+            var template = await _templateRepository.GetByIdAsync(id);
+
+            if (template == null)
+            {
+                return NotFound();
+            }
+
+            await _templateRepository.RemoveProjectFromTemplate(template.Id, projectId);
+
             return NoContent();
         }
     }

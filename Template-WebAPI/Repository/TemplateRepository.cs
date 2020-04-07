@@ -32,15 +32,41 @@ namespace Template_WebAPI.Repository
 
         public async Task<Boolean> CheckIfNamesDuplicate(Template template)
         {
-            var filter = Builders<Template>.Filter.Eq("Name", template.Name);
-
             _dbCollection = _mongoContext.GetCollection<Template>(typeof(Template).Name);
 
-            var returnTemplateIfFound = await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
+            var filterById = Builders<Template>.Filter.Eq("_id", new ObjectId(template.Id));
 
-            if (returnTemplateIfFound != null)
+            var filterByIdAndName = Builders<Template>.Filter.Eq("_id", new ObjectId(template.Id))
+                & Builders<Template>.Filter.Eq("Name", template.Name);
+            try
             {
-                return true;
+                var returnedTemplateSearchResult = await _dbCollection.FindAsync(filterByIdAndName).Result.FirstOrDefaultAsync();
+                
+                if (returnedTemplateSearchResult != null)
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            var returnedTemplateSearch = await _dbCollection.FindAsync(filterById).Result.FirstOrDefaultAsync();
+
+            if (returnedTemplateSearch.Id == template.Id)
+            {
+                var filterByName = Builders<Template>.Filter.Eq("Name", template.Name);
+                var returnTemplateIfFound = await _dbCollection.FindAsync(filterByName).Result.FirstOrDefaultAsync();
+
+                if (returnTemplateIfFound != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

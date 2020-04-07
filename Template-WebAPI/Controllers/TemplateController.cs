@@ -41,17 +41,22 @@ namespace Template_WebAPI.Controllers
         [HttpPut("{templateId:length(24)}")]
         public async Task<IActionResult> UpdateAsync(Template templateIn, string templateId)
         {
+            var template = await _templateRepository.GetByIdAsync(templateId);
+
+            if (template == null)
+            {
+                return NotFound();
+            }
+
             var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(templateIn);
             if (returnedBoolValue == true)
             {
                 return StatusCode(412, "Error: The Template name is already in use.");
             }
 
-            var template = await _templateRepository.GetByIdAsync(templateId);
-
-            if (template == null)
+            foreach (var value in templateIn.ProjectId)
             {
-                return NotFound();
+                value.Remove(value.IndexOf(value));
             }
 
             await _templateRepository.UpdateAsync(templateIn, templateId);
@@ -78,12 +83,6 @@ namespace Template_WebAPI.Controllers
         [Route("{templateId}/project/{projectId}")]
         public async Task<ActionResult<Template>> CreateAsync(string templateId, string projectId)
         {
-            var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(template);
-            if (returnedBoolValue == true)
-            {
-                return StatusCode(412, "Error: The Template name is already in use.");
-            }
-
             if (projectId == null || templateId == null)
             {
                 throw new ArgumentNullException("Neither the 'Template Id' nor the 'Project Id' can be null.");

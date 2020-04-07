@@ -6,7 +6,7 @@ namespace Template_WebAPI.Repository
 {
     public interface ITemplateRepository : IBaseRepository<Template>
     {
-        Task AddProjectByTemplateIdAsync(Template templateObj, string projectId);
+        Task AddProjectByTemplateIdAsync(string templateId, string projectId);
         Task RemoveProjectFromTemplate(string templateId, string projectId);
     }
 }

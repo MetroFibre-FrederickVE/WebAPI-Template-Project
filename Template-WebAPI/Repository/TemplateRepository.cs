@@ -14,24 +14,18 @@ namespace Template_WebAPI.Repository
 
         }
 
-        public async Task AddProjectByTemplateIdAsync(Template templateObj, string templateId)
-        {
-            if (templateObj == null || templateId == null)
-            {
-                throw new ArgumentNullException(typeof(Template).Name + " object is null");
-            }
-            else if (templateId.Length != 24)
-            {
-                throw new ArgumentOutOfRangeException(typeof(Template).Name + " string has to be 24 characters.");
-            }
-
-            await _dbCollection.ReplaceOneAsync(Builders<Template>.Filter.Eq("_id", new ObjectId(templateId)), templateObj);
-        }
-
-        public async Task RemoveProjectFromTemplate(string templateId, string projectIdInput)
+        public async Task AddProjectByTemplateIdAsync(string templateId, string projectId)
         {
             var idFilter = Builders<Template>.Filter.Eq("_id", new ObjectId(templateId));
-            var updateBuilder = Builders<Template>.Update.Pull("ProjectId", projectIdInput);
+            var updateBuilder = Builders<Template>.Update.AddToSet("ProjectId", projectId);
+
+            await _dbCollection.UpdateOneAsync(idFilter, updateBuilder);
+        }
+
+        public async Task RemoveProjectFromTemplate(string templateId, string projectId)
+        {
+            var idFilter = Builders<Template>.Filter.Eq("_id", new ObjectId(templateId));
+            var updateBuilder = Builders<Template>.Update.Pull("ProjectId", projectId);
             
             await _dbCollection.UpdateOneAsync(idFilter, updateBuilder);
         }

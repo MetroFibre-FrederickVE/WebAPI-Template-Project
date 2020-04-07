@@ -41,6 +41,12 @@ namespace Template_WebAPI.Controllers
         [HttpPut("{templateId:length(24)}")]
         public async Task<IActionResult> UpdateAsync(Template templateIn, string templateId)
         {
+            var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(templateIn);
+            if (returnedBoolValue == true)
+            {
+                return StatusCode(412, "Error: The Template name is already in use.");
+            }
+
             var template = await _templateRepository.GetByIdAsync(templateId);
 
             if (template == null)
@@ -56,9 +62,15 @@ namespace Template_WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Template>> CreateAsync(Template template)
         {
+            var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(template);
+            if (returnedBoolValue == true)
+            {
+                return StatusCode(412, "Error: The Template name is already in use.");
+            }
+
             await _templateRepository.AddAsync(template);
 
-            return CreatedAtRoute("GetTemplate", new { id = template.Id.ToString() }, template);
+            return CreatedAtRoute("GetTemplate", new { templateId = template.Id.ToString() }, template);
         }
 
         [HttpPost]
@@ -66,6 +78,12 @@ namespace Template_WebAPI.Controllers
         [Route("{templateId}/project/{projectId}")]
         public async Task<ActionResult<Template>> CreateAsync(string templateId, string projectId)
         {
+            var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(template);
+            if (returnedBoolValue == true)
+            {
+                return StatusCode(412, "Error: The Template name is already in use.");
+            }
+
             if (projectId == null || templateId == null)
             {
                 throw new ArgumentNullException("Neither the 'Template Id' nor the 'Project Id' can be null.");

@@ -29,5 +29,23 @@ namespace Template_WebAPI.Repository
             
             await _dbCollection.UpdateOneAsync(idFilter, updateBuilder);
         }
+
+        public async Task<Boolean> CheckIfNamesDuplicate(Template template)
+        {
+            var filter = Builders<Template>.Filter.Eq("Name", template.Name);
+
+            _dbCollection = _mongoContext.GetCollection<Template>(typeof(Template).Name);
+
+            var returnTemplateIfFound = await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
+
+            if (returnTemplateIfFound != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

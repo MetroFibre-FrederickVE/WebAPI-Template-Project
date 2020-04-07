@@ -388,5 +388,3 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
-# End of https://www.gitignore.io/api/windows,dotnetcore,visualstudio
-Template-WebAPI/Template-WebAPI.csproj

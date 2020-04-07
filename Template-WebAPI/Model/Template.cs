@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using Template_WebAPI.Enums;
 
 namespace Template_WebAPI.Model
 {
+    [BsonIgnoreExtraElements]
     public class Template
     {
         [BsonId]
@@ -24,6 +24,7 @@ namespace Template_WebAPI.Model
         [Required(ErrorMessage = "{0} is a mandatory field")]
         public EnumValue Sensor { get; set; }
 
+        [BsonIgnoreIfNull]
         [BsonElement("ProjectId")]
         public string[] ProjectId { get; set; }
     }

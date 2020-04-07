@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -45,10 +44,11 @@ namespace Template_WebAPI.Repository
             await _dbCollection.InsertOneAsync(obj);
         }
 
-        public async Task UpdateAsync(TEntity obj, string id)
+        public async Task UpdateAsync(TEntity obj, string id, UpdateDefinition<TEntity> update)
         {
             var objectId = new ObjectId(id);
-            await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
+            //await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
+            await _dbCollection.UpdateOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), update);
         }
 
         public async Task RemoveAsync(string id)

@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 using System;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Template_WebAPI.Controllers
 {
@@ -54,14 +57,13 @@ namespace Template_WebAPI.Controllers
                 return StatusCode(412, "Error: The Template name is already in use.");
             }
 
-            foreach (var value in templateIn.ProjectId)
-            {
-                value.Remove(value.IndexOf(value));
-            }
+            var updateDef = Builders<Template>.Update.Set(n => n.Name, templateIn.Name)
+                                                     .Set(p => p.ProcessLevel, templateIn.ProcessLevel)
+                                                     .Set(s => s.Sensor, templateIn.Sensor);
 
-            await _templateRepository.UpdateAsync(templateIn, templateId);
+            await _templateRepository.UpdateAsync(templateIn, templateId, updateDef);
 
-            return Ok(templateIn);
+            return Ok(await _templateRepository.GetByIdAsync(templateId));
         }
 
         [HttpPost]

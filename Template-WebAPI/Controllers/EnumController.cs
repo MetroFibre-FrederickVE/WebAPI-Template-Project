@@ -10,7 +10,6 @@ namespace Template_WebAPI.Controllers
     [ApiController]
     public class EnumController : ControllerBase
     {
-
         private readonly IEnumRepository _enumExtensions;
 
         public EnumController(IEnumRepository enumExtensions)

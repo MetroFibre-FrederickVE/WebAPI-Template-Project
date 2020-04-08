@@ -47,7 +47,6 @@ namespace Template_WebAPI.Repository
         public async Task UpdateAsync(TEntity obj, string id, UpdateDefinition<TEntity> update)
         {
             var objectId = new ObjectId(id);
-            //await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), obj);
             await _dbCollection.UpdateOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId), update);
         }
 

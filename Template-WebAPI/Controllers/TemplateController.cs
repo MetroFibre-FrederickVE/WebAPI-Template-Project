@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 using System;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using MongoDB.Bson;
 
 namespace Template_WebAPI.Controllers
 {

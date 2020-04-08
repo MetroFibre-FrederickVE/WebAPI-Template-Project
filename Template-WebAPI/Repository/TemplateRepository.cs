@@ -47,7 +47,7 @@ namespace Template_WebAPI.Repository
                     return false;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 throw new ArgumentOutOfRangeException();
             }

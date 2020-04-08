@@ -34,39 +34,32 @@ namespace Template_WebAPI.Repository
         {
             _dbCollection = _mongoContext.GetCollection<Template>(typeof(Template).Name);
 
-            var filterById = Builders<Template>.Filter.Eq("_id", new ObjectId(template.Id));
-
-            var filterByIdAndName = Builders<Template>.Filter.Eq("_id", new ObjectId(template.Id))
-                & Builders<Template>.Filter.Eq("Name", template.Name);
-            try
+            if (template.Id != null)
             {
-                var returnedTemplateSearchResult = await _dbCollection.FindAsync(filterByIdAndName).Result.FirstOrDefaultAsync();
-                
-                if (returnedTemplateSearchResult != null)
+                try
                 {
-                    return false;
+                    var filterByIdAndName = Builders<Template>.Filter.Eq("_id", new ObjectId(template.Id))
+                                      & Builders<Template>.Filter.Eq("Name", template.Name);
+
+                    var returnedTemplateSearchResult = await _dbCollection.FindAsync(filterByIdAndName).Result.FirstOrDefaultAsync();
+
+                    if (returnedTemplateSearchResult != null)
+                    {
+                        return false;
+                    }
+                }
+                catch
+                {
+                    throw new Exception();
                 }
             }
-            catch
+
+            var filterByName = Builders<Template>.Filter.Eq("Name", template.Name);
+            var returnTemplateIfFound = await _dbCollection.FindAsync(filterByName).Result.FirstOrDefaultAsync();
+
+            if (returnTemplateIfFound != null)
             {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            var returnedTemplateSearch = await _dbCollection.FindAsync(filterById).Result.FirstOrDefaultAsync();
-
-            if (returnedTemplateSearch.Id == template.Id)
-            {
-                var filterByName = Builders<Template>.Filter.Eq("Name", template.Name);
-                var returnTemplateIfFound = await _dbCollection.FindAsync(filterByName).Result.FirstOrDefaultAsync();
-
-                if (returnTemplateIfFound != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             else
             {

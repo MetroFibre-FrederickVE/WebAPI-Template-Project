@@ -12,6 +12,8 @@ namespace Template_WebAPI.Controllers
     [ApiController]
     public class TemplateController : ControllerBase
     {
+        //TODO: We need to implement our business logic tier in between the Controllers and Repo's
+        //      The controller is becoming too complex.
         private readonly ITemplateRepository _templateRepository;
         
         public TemplateController(ITemplateRepository templateRepository)
@@ -52,12 +54,11 @@ namespace Template_WebAPI.Controllers
             var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(templateIn);
             if (returnedBoolValue == true)
             {
-                return StatusCode(412, "Error: The Template name is already in use.");
+              return BadRequest(new ErrorResponse(400.1, $"The Template name \"{template.Name}\" is already in use."));
             }
 
             var updateDef = Builders<Template>.Update.Set(n => n.Name, templateIn.Name)
-                                                     .Set(p => p.ProcessLevel, templateIn.ProcessLevel)
-                                                     .Set(s => s.Sensor, templateIn.Sensor);
+                                                     .Set(p => p.ProcessLevel, templateIn.ProcessLevel);
 
             await _templateRepository.UpdateAsync(templateIn, templateId, updateDef);
 
@@ -70,7 +71,7 @@ namespace Template_WebAPI.Controllers
             var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(template);
             if (returnedBoolValue == true)
             {
-                return StatusCode(412, "Error: The Template name is already in use.");
+              return BadRequest(new ErrorResponse(400.1, $"The Template name \"{template.Name}\" is already in use."));
             }
 
             await _templateRepository.AddAsync(template);

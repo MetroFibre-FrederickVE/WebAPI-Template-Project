@@ -1,4 +1,4 @@
-﻿namespace Template_WebAPI.Interfaces
+﻿namespace Template_WebAPI.Upload
 {
     public interface IUploadRepository
     {

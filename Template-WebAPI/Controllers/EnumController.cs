@@ -20,16 +20,16 @@ namespace Template_WebAPI.Controllers
 
     [HttpGet]
     [Route("sensor")]
-    public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorAsync()
+    public ActionResult<IEnumerable<Sensor>> GetSensorAsync()
     {
-      return Ok(await _enumExtensions.GetValuesAsync<Sensor>());
+      return Ok(_enumExtensions.GetValuesAsync<Sensor>());
     }
 
     [HttpGet]
     [Route("processlevel")]
-    public async Task<ActionResult<IEnumerable<ProcessLevel>>> GetProcessAsync()
+    public ActionResult<IEnumerable<ProcessLevel>> GetProcessAsync()
     {
-      return Ok(await _enumExtensions.GetValuesAsync<ProcessLevel>());
+      return Ok(_enumExtensions.GetValuesAsync<ProcessLevel>());
     }
   }
 }

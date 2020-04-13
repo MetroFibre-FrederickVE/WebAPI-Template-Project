@@ -6,6 +6,6 @@ namespace Template_WebAPI.Interfaces
 {
   public interface IEnumExtension
   {
-    Task<List<EnumValue>> GetValuesAsync<T>();
+    List<EnumValue> GetValuesAsync<T>();
   }
 }

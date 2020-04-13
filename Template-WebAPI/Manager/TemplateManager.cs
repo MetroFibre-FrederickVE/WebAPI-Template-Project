@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 
@@ -113,6 +116,32 @@ namespace Template_WebAPI.Manager
       await repository.UpdateAsync(templateIn, templateId);
 
       return new Tuple<ErrorResponse, Template>(null, templateIn);
+    }
+
+    public Tuple<ErrorResponse, object> ProcessTemplateFile(IFormFile file)
+    {      
+      var folderName = Path.Combine("Resources", "File");
+      var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+      if (file.Length > 0)
+      {
+        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+        var fullPath = Path.Combine(pathToSave, fileName);
+        var dbPath = Path.Combine(folderName, fileName);
+
+        using (var stream = new FileStream(fullPath, FileMode.Create))
+        {
+          file.CopyTo(stream);
+        }
+        return new Tuple<ErrorResponse, object>(null, null);
+        // TODO: 
+        // process template inputs from xml     
+        // return as tuple result   
+      }
+      else
+      {
+        return new Tuple<ErrorResponse, object>(new ErrorResponse(400.3, "The Template input upload should contain a file"), null);
+      }      
     }
   }
 }

@@ -60,6 +60,28 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
+    [HttpPost]
+    [Route("{templateId}/templateinput")]
+    [HttpPost, DisableRequestSizeLimit]    
+    public ActionResult<object> ProcessTemplateFile()
+    {
+      var file = Request.Form.Files[0];
+      var projectAssociationResult = templateManager.ProcessTemplateFile(file);
+      if (projectAssociationResult.Item1 != null)
+      {
+        if (projectAssociationResult.Item1.ResponseCode < 401)
+        {
+          return BadRequest(projectAssociationResult.Item1);
+        }
+        if (projectAssociationResult.Item1.ResponseCode == 404)
+        {
+          return NotFound();
+        }
+      }
+
+      return Ok(projectAssociationResult.Item2);
+    }
+
     [HttpDelete("{templateId:length(24)}")]
     public async Task<ActionResult<Template>> DeleteByIdAsync(string templateId)
     {

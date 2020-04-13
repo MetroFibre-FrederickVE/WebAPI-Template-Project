@@ -7,8 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Template_WebAPI.DbContexts;
-using Template_WebAPI.Interfaces;
+using Template_WebAPI.Manager;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI
@@ -30,10 +29,9 @@ namespace Template_WebAPI
         builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
       }));
 
-
-
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
       services.AddSingleton<IMongoContext, MongoContext>();
+      services.AddSingleton<ITemplateManager, TemplateManager>();
       services.AddSingleton<ITemplateRepository, TemplateRepository>();
       services.AddSingleton<IEnumRepository, EnumRepository>();
     }

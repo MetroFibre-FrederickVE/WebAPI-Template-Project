@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
-using Template_WebAPI.Interfaces;
 
-namespace Template_WebAPI.DbContexts
+namespace Template_WebAPI.Repository
 {
   public class MongoContext : IMongoContext
   {

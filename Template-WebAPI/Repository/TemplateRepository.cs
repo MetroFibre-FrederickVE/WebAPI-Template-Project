@@ -2,7 +2,6 @@
 using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;
-using Template_WebAPI.Interfaces;
 using Template_WebAPI.Model;
 
 namespace Template_WebAPI.Repository
@@ -65,6 +64,13 @@ namespace Template_WebAPI.Repository
       {
         return false;
       }
+    }
+
+    public async Task UpdateAsync(Template templateIn, string id)
+    {
+      var updateDef = Builders<Template>.Update.Set(n => n.Name, templateIn.Name)
+                                         .Set(p => p.ProcessLevel, templateIn.ProcessLevel);
+      await UpdateAsync(templateIn, id, updateDef);
     }
   }
 }

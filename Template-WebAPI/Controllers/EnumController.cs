@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Template_WebAPI.Enums;
-using Template_WebAPI.Interfaces;
+using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers
 {

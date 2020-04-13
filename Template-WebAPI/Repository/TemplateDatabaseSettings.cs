@@ -1,4 +1,4 @@
-﻿namespace Template_WebAPI.Models
+﻿namespace Template_WebAPI.Repository
 {
   public class TemplateDatabaseSettings : ITemplateDatabaseSettings
   {

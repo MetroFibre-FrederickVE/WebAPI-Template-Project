@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 using System;
-using MongoDB.Driver;
+using Template_WebAPI.Manager;
+using System.Net.Http;
 
 namespace Template_WebAPI.Controllers
 {
@@ -12,71 +13,41 @@ namespace Template_WebAPI.Controllers
   [ApiController]
   public class TemplateController : ControllerBase
   {
-    //TODO: We need to implement our business logic tier in between the Controllers and Repo's
-    //      The controller is becoming too complex.
     private readonly ITemplateRepository _templateRepository;
+    private readonly ITemplateManager templateManager;
 
-    public TemplateController(ITemplateRepository templateRepository)
+    public TemplateController(ITemplateRepository templateRepository, ITemplateManager templateManager)
     {
+      this.templateManager = templateManager;
       _templateRepository = templateRepository;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {
-      var templates = await _templateRepository.GetAllAsync();
-      return Ok(templates);
+      var templates = await templateManager.GetAllAsync();
+      return HandInvalidRequest<IEnumerable<Template>>(templates, HttpMethod.Get);
     }
 
     [HttpGet("{templateId:length(24)}", Name = "GetTemplate")]
     public async Task<ActionResult<Template>> GetUsingIdAsync(string templateId)
     {
-      var template = await _templateRepository.GetByIdAsync(templateId);
-
-      if (template == null)
-      {
-        return NotFound();
-      }
-
-      return Ok(template);
+      var templateResult = await templateManager.GetUsingIdAsync(templateId);
+      return HandInvalidRequest<Template>(templateResult, HttpMethod.Get);
     }
 
     [HttpPut("{templateId:length(24)}")]
-    public async Task<IActionResult> UpdateAsync(Template templateIn, string templateId)
+    public async Task<ActionResult<Template>> UpdateAsync(Template templateIn, string templateId)
     {
-      var template = await _templateRepository.GetByIdAsync(templateId);
-
-      if (template == null)
-      {
-        return NotFound();
-      }
-
-      var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(templateIn);
-      if (returnedBoolValue == true)
-      {
-        return BadRequest(new ErrorResponse(400.1, $"The Template name \"{template.Name}\" is already in use."));
-      }
-
-      var updateDef = Builders<Template>.Update.Set(n => n.Name, templateIn.Name)
-                                               .Set(p => p.ProcessLevel, templateIn.ProcessLevel);
-
-      await _templateRepository.UpdateAsync(templateIn, templateId, updateDef);
-
-      return Ok(await _templateRepository.GetByIdAsync(templateId));
+      var createResult = await templateManager.UpdateAsync(templateIn, templateId);
+      return HandInvalidRequest<Template>(createResult, HttpMethod.Put);
     }
 
     [HttpPost]
     public async Task<ActionResult<Template>> CreateAsync(Template template)
     {
-      var returnedBoolValue = await _templateRepository.CheckIfNamesDuplicate(template);
-      if (returnedBoolValue == true)
-      {
-        return BadRequest(new ErrorResponse(400.1, $"The Template name \"{template.Name}\" is already in use."));
-      }
-
-      await _templateRepository.AddAsync(template);
-
-      return CreatedAtRoute("GetTemplate", new { templateId = template.Id.ToString() }, template);
+      var createResult = await templateManager.CreateAsync(template);
+      return HandInvalidRequest<Template>(createResult, HttpMethod.Post);
     }
 
     [HttpPost]
@@ -84,59 +55,55 @@ namespace Template_WebAPI.Controllers
     [Route("{templateId}/project/{projectId}")]
     public async Task<ActionResult<Template>> CreateAsync(string templateId, string projectId)
     {
-      if (projectId == null || templateId == null)
-      {
-        throw new ArgumentNullException("Neither the 'Template Id' nor the 'Project Id' can be null.");
-      }
-      else if (templateId.Length != 24)
-      {
-        throw new ArgumentOutOfRangeException("The Template Id string has to be 24 alphanumeric characters.");
-      }
-
       await _templateRepository.AddProjectByTemplateIdAsync(templateId, projectId);
-
-      return Ok(await _templateRepository.GetByIdAsync(templateId));
+      var projectAssociationResult = await templateManager.CreateProjectAssociationAsync(templateId, projectId);
+      return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
     [HttpDelete("{templateId:length(24)}")]
-    public async Task<IActionResult> DeleteByIdAsync(string templateId)
+    public async Task<ActionResult<Template>> DeleteByIdAsync(string templateId)
     {
-      var template = await _templateRepository.GetByIdAsync(templateId);
-
-      if (template == null)
-      {
-        return NotFound();
-      }
-
-      await _templateRepository.RemoveAsync(template.Id);
-
-      return NoContent();
+      var deleteResult = await templateManager.DeleteByIdAsync(templateId);
+      return HandInvalidRequest<Template>(deleteResult, HttpMethod.Delete);
     }
 
     [HttpDelete]
     [Route("{templateId}/project")]
     [Route("{templateId}/project/{projectId}")]
-    public async Task<IActionResult> DeleteProjectIdAsync(string templateId, string projectId)
+    public async Task<ActionResult<Template>> DeleteProjectIdAsync(string templateId, string projectId)
     {
-      if (projectId == null || templateId == null)
+      var deleteResult = await templateManager.RemoveProjectAssociationAsync(templateId, projectId);
+      return HandInvalidRequest<Template>(deleteResult, HttpMethod.Delete);
+    }
+
+    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, Template> createResult, HttpMethod method)
+    {
+      if (createResult.Item1 != null)
       {
-        throw new ArgumentNullException("Neither the 'Template Id' nor the 'Project Id' can be null.");
+        if (createResult.Item1.ResponseCode < 401)
+        {
+          return BadRequest(createResult.Item1);
+        }
+        if (createResult.Item1.ResponseCode == 404)
+        {
+          return NotFound();
+        }
       }
-      else if (templateId.Length != 24)
+
+      switch (method.Method.ToUpper())
       {
-        throw new ArgumentOutOfRangeException("The Template Id string has to be 24 alphanumeric characters.");
+        case "POST":
+          return CreatedAtRoute("GetTemplate", new { templateId = createResult.Item2.Id.ToString() }, createResult.Item2);
+        case "DELETE":
+          return NoContent();
+        default:
+          return Ok(createResult.Item2);
       }
+    }
 
-      var template = await _templateRepository.GetByIdAsync(templateId);
-
-      if (template == null)
-      {
-        return NotFound();
-      }
-
-      await _templateRepository.RemoveProjectFromTemplate(template.Id, projectId);
-
-      return Ok(await _templateRepository.GetByIdAsync(templateId));
+    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, IEnumerable<Template>> createResult, HttpMethod method)
+    {
+      return Ok(createResult.Item2);
     }
   }
 }

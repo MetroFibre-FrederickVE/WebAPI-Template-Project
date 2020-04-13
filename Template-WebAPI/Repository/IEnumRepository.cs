@@ -2,7 +2,8 @@
 
 namespace Template_WebAPI.Repository
 {
-  public class EnumRepository : EnumExtension, IEnumRepository
+  public interface IEnumRepository : IEnumExtension
   {
+
   }
 }

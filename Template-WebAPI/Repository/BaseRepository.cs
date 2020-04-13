@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Template_WebAPI.Interfaces;
 
 namespace Template_WebAPI.Repository
 {

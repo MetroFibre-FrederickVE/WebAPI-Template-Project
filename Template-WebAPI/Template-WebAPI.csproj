@@ -16,4 +16,11 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\File\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\File\3E298DE435C1F8B0BC7900F231F71CE789329D10.torrent" />
+  </ItemGroup>
 </Project>

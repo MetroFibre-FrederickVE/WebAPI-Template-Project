@@ -2,8 +2,8 @@
 
 namespace Template_WebAPI.Interfaces
 {
-    public interface IMongoContext
-    {
-        IMongoCollection<T> GetCollection<T>(string name);
-    }
+  public interface IMongoContext
+  {
+    IMongoCollection<T> GetCollection<T>(string name);
+  }
 }

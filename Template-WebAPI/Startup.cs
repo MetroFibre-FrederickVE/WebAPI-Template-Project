@@ -32,7 +32,7 @@ namespace Template_WebAPI
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
       services.AddSingleton<IMongoContext, MongoContext>();
       services.AddSingleton<ITemplateManager, TemplateManager>();
-      services.AddSingleton<ITemplateRepository, TemplateRepository>();
+      services.AddSingleton<ITemplateRepository, MongoDBTemplateRepository>();
       services.AddSingleton<IEnumRepository, EnumRepository>();
     }
 

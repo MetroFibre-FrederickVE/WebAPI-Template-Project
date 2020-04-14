@@ -26,7 +26,6 @@ namespace Template_WebAPI.Controllers
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {
       var templates = await templateManager.GetAllAsync();
-      templateManager.ClearDraftDir();
       return HandInvalidRequest<IEnumerable<Template>>(templates, HttpMethod.Get);
     }
 

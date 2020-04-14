@@ -16,8 +16,5 @@ namespace Template_WebAPI.Manager
     Task<Tuple<ErrorResponse, Template>> UpdateAsync(Template templateIn, string templateId);
     Tuple<ErrorResponse, object> ProcessTemplateFile(IFormFile file);
     Task<Tuple<ErrorResponse, Template>> RemoveProjectAssociationAsync(string templateId, string projectId);
-
-    // Dir Clear Test
-    void ClearDraftDir();
   }
 }

@@ -14,7 +14,7 @@ namespace Template_WebAPI.Manager
     Task<Tuple<ErrorResponse, IEnumerable<Template>>> GetAllAsync();
     Task<Tuple<ErrorResponse, Template>> GetUsingIdAsync(string templateId);
     Task<Tuple<ErrorResponse, Template>> UpdateAsync(Template templateIn, string templateId);
-    Tuple<ErrorResponse, object> ProcessTemplateFile(IFormFile file);
+    Tuple<ErrorResponse, Template> ProcessTemplateFile(IFormFile file);
     Task<Tuple<ErrorResponse, Template>> RemoveProjectAssociationAsync(string templateId, string projectId);
   }
 }

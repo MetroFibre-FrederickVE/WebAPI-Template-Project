@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Template_WebAPI.Enums;
 
@@ -8,6 +9,11 @@ namespace Template_WebAPI.Model
   [BsonIgnoreExtraElements]
   public class Template
   {
+    private List<TemplateInputMapping> templateInputMapping;
+    public Template()
+    {
+      templateInputMapping = new List<TemplateInputMapping>();
+    }
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
@@ -24,5 +30,7 @@ namespace Template_WebAPI.Model
     [BsonIgnoreIfNull]
     [BsonElement("ProjectId")]
     public string[] ProjectId { get; set; }
+
+    public List<TemplateInputMapping> TemplateInputMapping { get { return templateInputMapping; } }
   }
 }

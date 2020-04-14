@@ -61,25 +61,13 @@ namespace Template_WebAPI.Controllers
     }
 
     [HttpPost]
-    [Route("{templateId}/templateinput")]
+    [Route("file")]
     [HttpPost, DisableRequestSizeLimit]    
-    public ActionResult<object> ProcessTemplateFile()
+    public ActionResult<Template> ProcessTemplateFile()
     {
       var file = Request.Form.Files[0];
       var projectAssociationResult = templateManager.ProcessTemplateFile(file);
-      if (projectAssociationResult.Item1 != null)
-      {
-        if (projectAssociationResult.Item1.ResponseCode < 401)
-        {
-          return BadRequest(projectAssociationResult.Item1);
-        }
-        if (projectAssociationResult.Item1.ResponseCode == 404)
-        {
-          return NotFound();
-        }
-      }
-
-      return Ok(projectAssociationResult.Item2);
+      return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);     
     }
 
     [HttpDelete("{templateId:length(24)}")]

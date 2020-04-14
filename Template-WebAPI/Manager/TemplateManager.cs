@@ -16,6 +16,12 @@ namespace Template_WebAPI.Manager
   public class TemplateManager : ITemplateManager
   {
     private readonly ITemplateRepository repository;
+    enum CryptoAction
+    {
+      ActionEncrypt = 1,
+      ActionDecrypt = 2
+    }
+
     public TemplateManager(ITemplateRepository repository)
     {
       this.repository = repository;
@@ -122,7 +128,7 @@ namespace Template_WebAPI.Manager
       return new Tuple<ErrorResponse, Template>(null, templateIn);
     }
 
-    public Tuple<ErrorResponse, object> ProcessTemplateFile(IFormFile file)
+    public Tuple<ErrorResponse, Template> ProcessTemplateFile(IFormFile file)
     {
       var folderName = Path.Combine("Resources", "File");
       var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
@@ -137,20 +143,46 @@ namespace Template_WebAPI.Manager
         {
           file.CopyTo(stream);
         }
-        var legacyTemplate = ConvertXMLFileToXmlTemplate(fullPath);   
-        return new Tuple<ErrorResponse, object>(null, legacyTemplate);
-        // TODO: 
-        // process template inputs from xml     
-        // return as tuple result
-        
+        var legacyTemplate = ConvertXMLFileToXmlTemplate(fullPath);
+        var retVal = new Template();
+        retVal.Id = repository.GenerateTemplateId();
+        retVal.Name = legacyTemplate.GroupNames.Title;
+        foreach (var inputOutput in legacyTemplate.GroupNames.TemplateInputOutput.IO)
+        {
+          var fileTypeData = legacyTemplate.GroupNames.FileInfoTable.Row.Find(_ => _.FileTypeID == inputOutput.FileTypeID);
+          if (fileTypeData == null)
+          {
+            return new Tuple<ErrorResponse, Template>(new ErrorResponse(400.4, $"Unkown file type for input:{inputOutput.Title}."), null);
+          }
+          var fileType = new FileType
+          {
+            FileTypeId = int.Parse(fileTypeData.FileTypeID),
+            DisplayName = fileTypeData.Title,
+            DefaultFileName = fileTypeData.matchfilename,
+            ExtensionName = fileTypeData.Extensions,
+            IsHeader = bool.Parse(fileTypeData.IsHeader),
+            IsImage = bool.Parse(fileTypeData.IsImage),
+            IsRaw = bool.Parse(fileTypeData.IsRaw),
+            IsXML = bool.Parse(fileTypeData.IsXML)            
+          };
+          retVal.TemplateInputMapping.Add(new TemplateInputMapping
+          {
+            _id = repository.GenerateTemplateId(),
+            FieldName = inputOutput.FieldName,
+            FileType = fileType,
+            IsInput = inputOutput.Direction == "Input",
+            moduleName = inputOutput.ModuleName
+          });
+        }
+        return new Tuple<ErrorResponse, Template>(null, retVal);
       }
       else
       {
-        return new Tuple<ErrorResponse, object>(new ErrorResponse(400.3, "The Template input upload should contain a file"), null);
+        return new Tuple<ErrorResponse, Template>(new ErrorResponse(400.3, "The Template input upload should contain a file"), null);
       }
     }
 
-    public Model.Legacy.TemplateObject ConvertXMLStringToXmlTemplate(string xmlString)
+    private Model.Legacy.TemplateObject ConvertXMLStringToXmlTemplate(string xmlString)
     {
       string dirtyChar = xmlString.Substring(100, 1);
       xmlString = xmlString.Replace(dirtyChar, "");
@@ -166,9 +198,8 @@ namespace Template_WebAPI.Manager
       //retrieve template Input/Output information. This is encrypted and converted to BinHex
       string templateInfo = xmlString.Substring(xmlString.IndexOf("<TIO>") + "<TIO>".Length);
       templateInfo = templateInfo.Substring(0, templateInfo.IndexOf("</TIO>"));
-      
-      Crypto security = new Crypto();
-      string templateInfoDecrypt = security.DecryptString("fgh#$erthwr", templateInfo);
+
+      string templateInfoDecrypt = DecryptString("fgh#$erthwr", templateInfo);
 
       //Change objectname "Table1" to "IO" for improved readability
       templateInfoDecrypt = templateInfoDecrypt.Replace("Table1", "IO");
@@ -191,28 +222,18 @@ namespace Template_WebAPI.Manager
       return templateJSON;
     }
 
-    public Model.Legacy.TemplateObject ConvertXMLFileToXmlTemplate(string xmlPath)
+    private Model.Legacy.TemplateObject ConvertXMLFileToXmlTemplate(string xmlPath)
     {
       string xmlString = null;
       using (StreamReader fs = new StreamReader(xmlPath))
       {
-        xmlString = fs.ReadToEnd();        
+        xmlString = fs.ReadToEnd();
       }
 
       return ConvertXMLStringToXmlTemplate(xmlString);
     }
-  }
 
-  class Crypto
-  {
-
-    enum CryptoAction
-    {
-      ActionEncrypt = 1,
-      ActionDecrypt = 2
-    }
-
-    public string DecryptString(string password, string EncryptedString)
+    private string DecryptString(string password, string EncryptedString)
     {
       byte[] bt = BinHextoByteArray(EncryptedString);
       return EncryptDecryptString(password, "", CryptoAction.ActionDecrypt, bt);
@@ -221,7 +242,7 @@ namespace Template_WebAPI.Manager
     {
       byte[] bytKey;
       byte[] bytIV;
-      bytKey = CreateKey(Password);      
+      bytKey = CreateKey(Password);
       bytIV = CreateIV(Password);
       switch (direction)
       {
@@ -291,7 +312,9 @@ namespace Template_WebAPI.Manager
       // bytResult into bytKey. The 0 To 31 will put the first 256 bits
       // of 512 bits into bytKey.
       for (int i = 0; i <= 31; i++)
+      {
         bytKey[i] = bytResult[i];
+      }
 
       return bytKey; // Return the key.
     }
@@ -306,7 +329,9 @@ namespace Template_WebAPI.Manager
 
       // Use For Next to convert and store chrData into bytDataToHash.
       for (int i = 0; i <= chrData.GetUpperBound(0); i++)
+      {
         bytDataToHash[i] = System.Convert.ToByte(Asc(chrData[i]));
+      }
 
       // Declare what hash to use.
       System.Security.Cryptography.SHA512Managed SHA512 = new System.Security.Cryptography.SHA512Managed();
@@ -319,7 +344,9 @@ namespace Template_WebAPI.Manager
       // The 0 To 30 for bytKey used the first 256 bits of the hashed password.
       // The 32 To 47 will put the next 128 bits into bytIV.
       for (int i = 32; i <= 47; i++)
+      {
         bytIV[i - 32] = bytResult[i];
+      }
 
       return bytIV; // Return the IV.
     }
@@ -355,7 +382,7 @@ namespace Template_WebAPI.Manager
         encryptedStream.Position = 0;
 
         result = new byte[encryptedStream.Length - 1 + 1];
-        encryptedStream.Read(result, 0, (int)encryptedStream.Length);                
+        encryptedStream.Read(result, 0, (int)encryptedStream.Length);
       }
       return new UTF8Encoding().GetString(result);
     }

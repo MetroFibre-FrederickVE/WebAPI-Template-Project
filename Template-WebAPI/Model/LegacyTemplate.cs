@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Template_WebAPI.Model.Legacy
 {
   public class TemplateObject
@@ -151,7 +153,8 @@ namespace Template_WebAPI.Model.Legacy
 
   public class Fileinfotable
   {
-    public Row1[] Row { get; set; }
+    // public Row1[] Row { get; set; }
+    public List<Row1> Row { get; set; }
   }
 
   public class Row1

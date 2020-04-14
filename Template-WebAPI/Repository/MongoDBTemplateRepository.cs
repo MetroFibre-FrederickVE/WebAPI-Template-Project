@@ -10,7 +10,6 @@ namespace Template_WebAPI.Repository
   {
     public MongoDBTemplateRepository(IMongoContext context) : base(context)
     {
-
     }
 
     public async Task AddProjectByTemplateIdAsync(string templateId, string projectId)
@@ -71,6 +70,11 @@ namespace Template_WebAPI.Repository
       var updateDef = Builders<Template>.Update.Set(n => n.Name, templateIn.Name)
                                          .Set(p => p.ProcessLevel, templateIn.ProcessLevel);
       await UpdateAsync(templateIn, id, updateDef);
+    }
+
+    public string GenerateTemplateId()
+    {
+      return ObjectId.GenerateNewId().ToString();
     }
   }
 }

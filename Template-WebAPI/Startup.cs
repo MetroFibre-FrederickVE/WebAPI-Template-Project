@@ -34,6 +34,7 @@ namespace Template_WebAPI
       services.AddSingleton<ITemplateManager, TemplateManager>();
       services.AddSingleton<ITemplateRepository, MongoDBTemplateRepository>();
       services.AddSingleton<IEnumRepository, EnumRepository>();
+      services.AddHostedService<TemplateDraftUploadDirCleaner>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

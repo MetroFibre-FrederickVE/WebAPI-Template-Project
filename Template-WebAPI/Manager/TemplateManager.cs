@@ -122,6 +122,19 @@ namespace Template_WebAPI.Manager
       return new Tuple<ErrorResponse, Template>(null, templateIn);
     }
 
+    // Dir Clear Test
+    public void ClearDraftDir()
+    {
+      var dirName = "C:/PyTestHttp/dir/api/upload";
+      string[] files = Directory.GetFiles(dirName);
+
+      foreach (string file in files)
+      {
+        FileInfo fileInfo = new FileInfo(file);
+        if (fileInfo.LastWriteTime < DateTime.Now.AddMinutes(60)) fileInfo.Delete();
+      }
+    }
+
     public Tuple<ErrorResponse, object> ProcessTemplateFile(IFormFile file)
     {
       var folderName = Path.Combine("Resources", "File");

@@ -10,6 +10,7 @@ namespace Template_WebAPI.Manager
   {
     Task<Tuple<ErrorResponse, Template>> CreateAsync(Template template);
     Task<Tuple<ErrorResponse, Template>> CreateProjectAssociationAsync(string templateId, string projectId);
+    Task<Tuple<ErrorResponse, TemplateInputMapping>> CreateTemplateInputAsync(string templateId, TemplateInputMapping templateInputMapping);
     Task<Tuple<ErrorResponse, Template>> DeleteByIdAsync(string templateId);
     Task<Tuple<ErrorResponse, IEnumerable<Template>>> GetAllAsync();
     Task<Tuple<ErrorResponse, Template>> GetUsingIdAsync(string templateId);

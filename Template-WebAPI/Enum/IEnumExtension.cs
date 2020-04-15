@@ -4,6 +4,6 @@ namespace Template_WebAPI.Enums
 {
   public interface IEnumExtension
   {
-    List<EnumValue> GetValuesAsync<T>();
+    List<EnumValue> GetValues<T>();
   }
 }

@@ -8,11 +8,10 @@ namespace Template_WebAPI.Model
 {
   [BsonIgnoreExtraElements]
   public class Template
-  {
-    private List<TemplateInputMapping> templateInputMapping;
+  {    
     public Template()
     {
-      templateInputMapping = new List<TemplateInputMapping>();
+      // templateInputMapping = new List<TemplateInputMapping>();
     }
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -31,6 +30,6 @@ namespace Template_WebAPI.Model
     [BsonElement("ProjectId")]
     public string[] ProjectId { get; set; }
 
-    public List<TemplateInputMapping> TemplateInputMapping { get { return templateInputMapping; } }
+    public List<TemplateInputMapping> TemplateInputMapping { get;set; }
   }
 }

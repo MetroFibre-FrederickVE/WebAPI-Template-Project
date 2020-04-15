@@ -61,13 +61,29 @@ namespace Template_WebAPI.Controllers
     }
 
     [HttpPost]
+    [Route("{templateId}/input/batch")]
+    public async Task<ActionResult<List<TemplateInputMapping>>> CreateTemplateInputAsync(string templateId, List<TemplateInputMapping> templateInputs)
+    {
+      var retVal = new List<TemplateInputMapping>();
+      foreach (var templateInput in templateInputs)
+      {
+        var projectAssociationResult = await templateManager.CreateTemplateInputAsync(templateId, templateInput);
+        if (projectAssociationResult.Item1 == null)
+        {
+          retVal.Add(projectAssociationResult.Item2);
+        }
+      }
+      return Ok(retVal);
+    }
+
+    [HttpPost]
     [Route("file")]
-    [HttpPost, DisableRequestSizeLimit]    
+    [HttpPost, DisableRequestSizeLimit]
     public ActionResult<Template> ProcessTemplateFile()
     {
       var file = Request.Form.Files[0];
       var projectAssociationResult = templateManager.ProcessTemplateFile(file);
-      return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);     
+      return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
     [HttpDelete("{templateId:length(24)}")]

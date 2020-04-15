@@ -8,7 +8,7 @@ namespace Template_WebAPI.Enums
 {
   public class EnumExtension : IEnumExtension
   {
-    public List<EnumValue> GetValuesAsync<T>()
+    public List<EnumValue> GetValues<T>()
     {
       var values = new List<EnumValue>();
 

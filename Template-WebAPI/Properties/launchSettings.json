@@ -12,19 +12,10 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/templates",
+      "launchUrl": "api/template",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    },
-    "Template_WebAPI": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/templates",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
     "Docker": {
       "commandName": "Docker",
@@ -32,6 +23,15 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api",
       "publishAllPorts": true,
       "useSSL": true
+    },
+    "Template_WebAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/template",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }

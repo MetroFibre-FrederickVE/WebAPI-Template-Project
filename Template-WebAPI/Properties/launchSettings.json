@@ -20,9 +20,9 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/template",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": false
     },
     "Template_WebAPI": {
       "commandName": "Project",

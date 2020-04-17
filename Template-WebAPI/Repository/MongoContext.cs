@@ -14,13 +14,19 @@ namespace Template_WebAPI.Repository
     {
       _configuration = configuration;
 
+      var connectionString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING");
+      
+      var mongodbCredentials = MongoCredential.CreateCredential(databaseName: _configuration["TemplateDatabaseSettings: DatabaseName"], username: "root",password: "example");
+
       // Connection Pooling settings
       var settings = new MongoClientSettings();
       settings.MaxConnectionPoolSize = 100;
       settings.MinConnectionPoolSize = 1;
       settings.MaxConnectionIdleTime = new TimeSpan(0, 1, 0);
       settings.WaitQueueTimeout = new TimeSpan(0, 1, 0);
-      settings.Server = new MongoServerAddress(_configuration["TemplateDatabaseSettings:ConnectionString"]);
+      settings.Server = new MongoServerAddress(connectionString);
+      settings.Credential = mongodbCredentials;
+      
 
       // Configuration to be injected later
       // Currently using testable local DB

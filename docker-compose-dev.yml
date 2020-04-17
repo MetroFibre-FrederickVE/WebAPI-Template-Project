@@ -22,22 +22,5 @@ services:
       - mongo
     networks:
       - "backend"
-  template-service:
-    privileged: true
-    image: "templatewebapi:dev"
-    # build:
-    #   context: .
-    #   dockerfile: FileManagement.Dockerfile
-    restart: always
-    expose:
-      - "5001"
-    ports:
-      - "5001:80"
-    environment:
-      MONGO_CONNECTION_STRING: "mongo"
-    links:
-      - "mongo:mongo"
-    networks:
-      - "backend"
 networks:
   backend:

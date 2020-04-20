@@ -12,7 +12,7 @@ namespace Template_WebAPI.Controllers
     public class HealthCheckController : ControllerBase
     {
     [HttpGet]
-    public ActionResult<string> GetSensorAsync()
+    public ActionResult<string> GetApiStatus()
     {
       return Ok("Template services up and running.");
     }

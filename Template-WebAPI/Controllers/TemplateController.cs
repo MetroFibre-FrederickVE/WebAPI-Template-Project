@@ -12,14 +12,12 @@ namespace Template_WebAPI.Controllers
   [Route("api/[controller]")]
   [ApiController]
   public class TemplateController : ControllerBase
-  {
-    private readonly ITemplateRepository _templateRepository;
+  {    
     private readonly ITemplateManager templateManager;
 
     public TemplateController(ITemplateRepository templateRepository, ITemplateManager templateManager)
     {
       this.templateManager = templateManager;
-      _templateRepository = templateRepository;
     }
 
     [HttpGet]
@@ -53,21 +51,56 @@ namespace Template_WebAPI.Controllers
     [HttpPost]
     [Route("{templateId}/project")]
     [Route("{templateId}/project/{projectId}")]
-    public async Task<ActionResult<Template>> CreateAsync(string templateId, string projectId)
-    {
-      await _templateRepository.AddProjectByTemplateIdAsync(templateId, projectId);
+    public async Task<ActionResult<Template>> CreateProjectAssociationAsync(string templateId, string projectId)
+    {      
       var projectAssociationResult = await templateManager.CreateProjectAssociationAsync(templateId, projectId);
       return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
     [HttpPost]
+    [Route("{templateId}/project/batch")]
+    public async Task<ActionResult<Template>> CreateProjectAssociationAsync(string templateId, List<string> projectIds)
+    {
+      Tuple<ErrorResponse, Template> updatedTemplateResult = null;
+      foreach (var projectId in projectIds)
+      {        
+        var projectAssociationResult = await templateManager.CreateProjectAssociationAsync(templateId, projectId);
+        if (projectAssociationResult.Item1 != null) {
+          return BadRequest(projectAssociationResult.Item1);
+        } else {
+          updatedTemplateResult = projectAssociationResult;
+        }
+      }
+
+      return HandInvalidRequest<Template>(updatedTemplateResult, HttpMethod.Post);
+    }
+
+    [HttpPost]
+    [Route("{templateId}/input/batch")]
+    public async Task<ActionResult<List<TemplateInputMapping>>> CreateTemplateInputAsync(string templateId, List<TemplateInputMapping> templateInputs)
+    {
+      var retVal = new List<TemplateInputMapping>();
+      foreach (var templateInput in templateInputs)
+      {
+        var projectAssociationResult = await templateManager.CreateTemplateInputAsync(templateId, templateInput);
+        if (projectAssociationResult.Item1 == null)
+        {
+          retVal.Add(projectAssociationResult.Item2);
+        } else {
+
+        }
+      }
+      return Ok(retVal);
+    }
+
+    [HttpPost]
     [Route("file")]
-    [HttpPost, DisableRequestSizeLimit]    
+    [HttpPost, DisableRequestSizeLimit]
     public ActionResult<Template> ProcessTemplateFile()
     {
       var file = Request.Form.Files[0];
       var projectAssociationResult = templateManager.ProcessTemplateFile(file);
-      return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);     
+      return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
     [HttpDelete("{templateId:length(24)}")]
@@ -77,8 +110,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(deleteResult, HttpMethod.Delete);
     }
 
-    [HttpDelete]
-    [Route("{templateId}/project")]
+    [HttpDelete]    
     [Route("{templateId}/project/{projectId}")]
     public async Task<ActionResult<Template>> DeleteProjectIdAsync(string templateId, string projectId)
     {

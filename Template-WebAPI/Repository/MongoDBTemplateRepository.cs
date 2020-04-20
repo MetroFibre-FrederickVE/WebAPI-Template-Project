@@ -76,5 +76,13 @@ namespace Template_WebAPI.Repository
     {
       return ObjectId.GenerateNewId().ToString();
     }
+
+    public async Task CreateTemplateInputAsync(string templateId, TemplateInputMapping templateInputMapping)
+    {
+      var idFilter = Builders<Template>.Filter.Eq("_id", new ObjectId(templateId));
+      var updateBuilder = Builders<Template>.Update.AddToSet("TemplateInputMapping", templateInputMapping);
+
+      await _dbCollection.UpdateOneAsync(idFilter, updateBuilder);
+    }
   }
 }

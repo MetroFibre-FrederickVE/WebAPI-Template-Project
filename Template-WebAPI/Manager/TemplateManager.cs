@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Template_WebAPI.Enums;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 
@@ -21,10 +22,12 @@ namespace Template_WebAPI.Manager
       ActionEncrypt = 1,
       ActionDecrypt = 2
     }
+    private readonly IEnumRepository enumRepository;
 
-    public TemplateManager(ITemplateRepository repository)
+    public TemplateManager(ITemplateRepository templateRepository, IEnumRepository enumRepository)
     {
-      this.repository = repository;
+      this.enumRepository = enumRepository;
+      this.repository = templateRepository;
     }
 
     public async Task<Tuple<ErrorResponse, Template>> CreateAsync(Template template)
@@ -143,8 +146,10 @@ namespace Template_WebAPI.Manager
         {
           file.CopyTo(stream);
         }
+        var defaultSensor = enumRepository.GetValues<Sensor>()[0];
         var legacyTemplate = ConvertXMLFileToXmlTemplate(fullPath);
         var retVal = new Template();
+        retVal.TemplateInputMapping = new List<TemplateInputMapping>();
         retVal.Id = repository.GenerateTemplateId();
         retVal.Name = legacyTemplate.GroupNames.Title;
         foreach (var inputOutput in legacyTemplate.GroupNames.TemplateInputOutput.IO)
@@ -163,15 +168,17 @@ namespace Template_WebAPI.Manager
             IsHeader = bool.Parse(fileTypeData.IsHeader),
             IsImage = bool.Parse(fileTypeData.IsImage),
             IsRaw = bool.Parse(fileTypeData.IsRaw),
-            IsXML = bool.Parse(fileTypeData.IsXML)            
+            IsXML = bool.Parse(fileTypeData.IsXML)
           };
+          
           retVal.TemplateInputMapping.Add(new TemplateInputMapping
           {
-            _id = repository.GenerateTemplateId(),
+            id = repository.GenerateTemplateId(),
             FieldName = inputOutput.FieldName,
             FileType = fileType,
             IsInput = inputOutput.Direction == "Input",
-            moduleName = inputOutput.ModuleName
+            moduleName = inputOutput.ModuleName,
+            Sensor = defaultSensor
           });
         }
         return new Tuple<ErrorResponse, Template>(null, retVal);
@@ -182,6 +189,12 @@ namespace Template_WebAPI.Manager
       }
     }
 
+    public async Task<Tuple<ErrorResponse, TemplateInputMapping>> CreateTemplateInputAsync(string templateId, TemplateInputMapping templateInputMapping)
+    {
+      await repository.CreateTemplateInputAsync(templateId, templateInputMapping);
+      return new Tuple<ErrorResponse, TemplateInputMapping>(null, templateInputMapping);
+    }
+    #region Template Processing
     private Model.Legacy.TemplateObject ConvertXMLStringToXmlTemplate(string xmlString)
     {
       string dirtyChar = xmlString.Substring(100, 1);
@@ -386,5 +399,9 @@ namespace Template_WebAPI.Manager
       }
       return new UTF8Encoding().GetString(result);
     }
+
+    #endregion
+
+
   }
 }

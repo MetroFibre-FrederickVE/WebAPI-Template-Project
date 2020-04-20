@@ -4,11 +4,12 @@ namespace Template_WebAPI.Model
 {
     public class TemplateInputMapping
     {
-        public string _id { get; set; }
+        public string id { get; set; }
         public bool IsInput { get; set; }
         public string moduleName { get; set; }
         public string FieldName { get; set; }        
         public FileType FileType { get; set; }
-        public Sensor Sensor { get; set; }
+        
+        public EnumValue Sensor { get; set; }
     }
 }

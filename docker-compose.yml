@@ -24,15 +24,14 @@ services:
       - "backend"
   template-service:
     privileged: true
-    image: "templatewebapi:dev"
-    # build:
-    #   context: .
-    #   dockerfile: FileManagement.Dockerfile
+    #image: "templateapidock"
+    #image: "apidocktest"
+    image: "templatecockercheck2"
     restart: always
-    expose:
-      - "5001"
-    ports:
-      - "5001:80"
+    expose:      
+      - "5000"
+    ports:      
+      - "5000:5000"
     environment:
       MONGO_CONNECTION_STRING: "mongo"
     links:

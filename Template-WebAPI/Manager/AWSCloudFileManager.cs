@@ -1,5 +1,7 @@
+using System.IO;
 using System.Threading.Tasks;
 using Amazon.S3;
+using Template_WebAPI.Model;
 
 namespace Template_WebAPI.Manager
 {
@@ -11,8 +13,11 @@ namespace Template_WebAPI.Manager
       this.awsS3 = s3;
     }
 
-    public Task UploadTemplateXMLFileAsync(string FullFileName)
+    public Task UploadTemplateXMLFileAsync(Template template)
     {
+      var folderName = Path.Combine("Resources", "File");
+      var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+      var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
       throw new System.NotImplementedException();
     }
   }

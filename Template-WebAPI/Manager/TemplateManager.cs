@@ -39,20 +39,9 @@ namespace Template_WebAPI.Manager
       {
         return new Tuple<ErrorResponse, Template>(new ErrorResponse(400.1, $"The Template name \"{template.Name}\" is already in use."), null);
       }
-      //TODO: Refactor into a method that can be invoked from here 
-      await UploadTemplateXML(template);
-      // -------------
-
+      await cloudFileManager.UploadTemplateXMLFileAsync(template);
       await repository.AddAsync(template);
       return new Tuple<ErrorResponse, Template>(null, template);
-    }
-
-    private async Task UploadTemplateXML(Template template)
-    {
-      var folderName = Path.Combine("Resources", "File");
-      var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-      var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
-      await cloudFileManager.UploadTemplateXMLFileAsync(fileName);
     }
 
     public async Task<Tuple<ErrorResponse, Template>> CreateProjectAssociationAsync(string templateId, string projectId)

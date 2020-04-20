@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using Template_WebAPI.Model;
 
 namespace Template_WebAPI.Manager
 {
     public interface ICloudFileManager
     {
-        Task UploadTemplateXMLFileAsync(string FullFileName);
+        Task UploadTemplateXMLFileAsync(Template template);
     }
 }

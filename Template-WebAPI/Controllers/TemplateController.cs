@@ -14,10 +14,12 @@ namespace Template_WebAPI.Controllers
   public class TemplateController : ControllerBase
   {    
     private readonly ITemplateManager templateManager;
+    private readonly ICloudFileManager cloudFileManager;
 
-    public TemplateController(ITemplateRepository templateRepository, ITemplateManager templateManager)
+    public TemplateController(ICloudFileManager cloudFileManager, ITemplateManager templateManager)
     {
       this.templateManager = templateManager;
+      this.cloudFileManager = cloudFileManager;
     }
 
     [HttpGet]
@@ -32,6 +34,15 @@ namespace Template_WebAPI.Controllers
     {
       var templateResult = await templateManager.GetUsingIdAsync(templateId);
       return HandInvalidRequest<Template>(templateResult, HttpMethod.Get);
+    }
+
+    [HttpGet]
+    [Route("{templateId}/signedurl")]
+    public async Task<ActionResult<string>> GetSignedURLAsync(string templateId)
+    {
+      var templateResult = await cloudFileManager.RetrieveSignedS3URL(templateId);
+      Console.WriteLine(templateResult);
+      return Ok();
     }
 
     [HttpPut("{templateId:length(24)}")]

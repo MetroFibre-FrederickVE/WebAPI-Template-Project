@@ -3,8 +3,9 @@ using Template_WebAPI.Model;
 
 namespace Template_WebAPI.Manager
 {
-    public interface ICloudFileManager
-    {
-        Task UploadTemplateXMLFileAsync(Template template);
-    }
+  public interface ICloudFileManager
+  {
+    Task UploadTemplateXMLFileAsync(Template template);
+    Task<string> RetrieveSignedS3URL(string templateId);
+  }
 }

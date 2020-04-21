@@ -9,7 +9,7 @@ namespace Template_WebAPI.Manager
 {
   public class AWSCloudFileManager : ICloudFileManager
   {
-    private const string bucketName = "firsttempbucket";
+    private string bucketName = Environment.GetEnvironmentVariable("AWSS3_BUCKET_NAME");
     private readonly IAmazonS3 awsS3;
 
     public AWSCloudFileManager(IAmazonS3 s3Client)
@@ -25,21 +25,9 @@ namespace Template_WebAPI.Manager
       var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
       var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
 
-      try
-      {
-        var fileTransferUtility = new TransferUtility(awsS3);
+      var fileTransferUtility = new TransferUtility(awsS3);
 
-        await fileTransferUtility.UploadAsync(fileName, bucketName);
-        Console.WriteLine("File upload has been completed");
-      }
-      catch (AmazonS3Exception e)
-      {
-        Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
-      }
+      await fileTransferUtility.UploadAsync(fileName, bucketName);
 
     }
   }

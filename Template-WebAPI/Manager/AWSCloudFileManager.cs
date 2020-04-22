@@ -12,9 +12,8 @@ namespace Template_WebAPI.Manager
   {
     private string bucketName = Environment.GetEnvironmentVariable("AWSS3_BUCKET_NAME");
 
-    // Provides the time period, in seconds, for which the generated presigned URL is valid. For example, 86400 (24 hours).
-    //This value is an integer. The minimum value you can set is 1, and the maximum is 604800 (seven days).
-    // A presigned URL can be valid for a maximum of seven days because the signing key you use in signature calculation is valid for up to seven days.
+    // A presigned URL can be valid for a maximum of seven days because the signing
+    // key you use in signature calculation is valid for up to seven days.
     private DateTime experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWSS3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
 
     private readonly IAmazonS3 awsS3;
@@ -38,17 +37,16 @@ namespace Template_WebAPI.Manager
 
     }
 
-    public async Task<string> RetrieveSignedS3URL(string templateId)
+    public async Task<string> RetrieveSignedURL(string templateId)
     {
-      GetPreSignedUrlRequest request = new GetPreSignedUrlRequest
+      GetPreSignedUrlRequest requestToBeSigned = new GetPreSignedUrlRequest
       {
         BucketName = bucketName,
         Key = templateId + ".xml",
         Expires = experationTime
       };
 
-      var signedUrl = awsS3.GetPreSignedURL(request);
-      //return new Tuple<ErrorResponse, string>(null, signedUrl);
+      var signedUrl = awsS3.GetPreSignedURL(requestToBeSigned);
       return signedUrl;
     }
   }

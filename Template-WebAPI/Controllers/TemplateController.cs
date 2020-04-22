@@ -38,11 +38,10 @@ namespace Template_WebAPI.Controllers
 
     [HttpGet]
     [Route("{templateId}/signedurl")]
-    public async Task<ActionResult<string>> GetSignedURLAsync(string templateId)
+    public async Task<ActionResult<string>> GetPresignedURLAsync(string templateId)
     {
-      var templateResult = await cloudFileManager.RetrieveSignedS3URL(templateId);
-      Console.WriteLine(templateResult);
-      return Ok();
+      var signedURL = await cloudFileManager.RetrieveSignedURL(templateId);
+      return Ok(signedURL);
     }
 
     [HttpPut("{templateId:length(24)}")]

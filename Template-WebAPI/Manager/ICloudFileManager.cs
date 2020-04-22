@@ -6,6 +6,6 @@ namespace Template_WebAPI.Manager
   public interface ICloudFileManager
   {
     Task UploadTemplateXMLFileAsync(Template template);
-    Task<string> RetrieveSignedS3URL(string templateId);
+    Task<string> RetrieveSignedURL(string templateId);
   }
 }

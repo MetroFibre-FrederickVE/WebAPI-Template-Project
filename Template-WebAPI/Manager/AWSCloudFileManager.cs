@@ -11,17 +11,13 @@ namespace Template_WebAPI.Manager
   public class AWSCloudFileManager : ICloudFileManager
   {
     private string bucketName = Environment.GetEnvironmentVariable("AWSS3_BUCKET_NAME");
-
-    // A presigned URL can be valid for a maximum of seven days because the signing
-    // key you use in signature calculation is valid for up to seven days.
-    private DateTime experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWSS3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
+    private DateTime experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
 
     private readonly IAmazonS3 awsS3;
 
     public AWSCloudFileManager(IAmazonS3 s3Client)
     {
       this.awsS3 = s3Client;
-      awsS3 = new AmazonS3Client();
     }
 
     public async Task UploadTemplateXMLFileAsync(Template template)

@@ -22,7 +22,6 @@ namespace Template_WebAPI.Manager
 
     public async Task UploadTemplateXMLFileAsync(Template template)
     {
-
       var folderName = Path.Combine("Resources", "File");
       var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
       var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
@@ -30,7 +29,6 @@ namespace Template_WebAPI.Manager
       var fileTransferUtility = new TransferUtility(awsS3);
 
       await fileTransferUtility.UploadAsync(fileName, bucketName);
-
     }
 
     public async Task<string> RetrieveSignedURL(string templateId)

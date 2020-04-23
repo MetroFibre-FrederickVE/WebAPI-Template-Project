@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Template_WebAPI.Model;
-using Template_WebAPI.Repository;
 using System;
 using Template_WebAPI.Manager;
 using System.Net.Http;

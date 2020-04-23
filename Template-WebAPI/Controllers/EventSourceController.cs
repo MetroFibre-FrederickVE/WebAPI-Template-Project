@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Template_WebAPI.Event;
+using Template_WebAPI.Events;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class EventController : ControllerBase
+  public class EventSourceController : ControllerBase
   {
     private readonly IEnumRepository _enumExtensions;
+    private readonly IEventSourceManager _eventsManager;
 
-    public EventController(IEnumRepository enumExtensions)
+    public EventSourceController(IEnumRepository enumExtensions, IEventSourceManager eventsManager)
     {
       _enumExtensions = enumExtensions;
+      _eventsManager = eventsManager;
     }
 
     [HttpGet]
@@ -24,14 +27,14 @@ namespace Template_WebAPI.Controllers
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EventTypes>> GetAllEventsdAsync()
+    public ActionResult<IEnumerable<EventTypes>> GetAllEventsAsync()
     {
       return Ok();
     }
 
     [HttpGet]
     [Route("event/{eventId}")]
-    public ActionResult<IEnumerable<EventTypes>> GetUsingEventIdAsync()
+    public ActionResult<IEnumerable<EventTypes>> GetEventUsingIdAsync(string eventId)
     {
       return Ok();
     }

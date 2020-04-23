@@ -1,4 +1,5 @@
 using System.IO;
+using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,12 +29,14 @@ namespace Template_WebAPI
       {
         builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
       }));
-
+      services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
+      services.AddAWSService<IAmazonS3>();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
       services.AddSingleton<IMongoContext, MongoContext>();
       services.AddSingleton<ITemplateManager, TemplateManager>();
       services.AddSingleton<ITemplateRepository, MongoDBTemplateRepository>();
       services.AddSingleton<IEnumRepository, EnumRepository>();
+      services.AddSingleton<ICloudFileManager, AWSCloudFileManager>();
       services.AddHostedService<TemplateDraftUploadDirCleaner>();
     }
 

@@ -22,21 +22,5 @@ services:
       - mongo
     networks:
       - "backend"
-  template-service:
-    privileged: true
-    #image: "templateapidock"
-    #image: "apidocktest"
-    image: "templatecockercheck2"
-    restart: always
-    expose:      
-      - "5000"
-    ports:      
-      - "5000:5000"
-    environment:
-      MONGO_CONNECTION_STRING: "mongo"
-    links:
-      - "mongo:mongo"
-    networks:
-      - "backend"
 networks:
   backend:

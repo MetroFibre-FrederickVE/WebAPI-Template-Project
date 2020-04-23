@@ -23,9 +23,11 @@ namespace Template_WebAPI.Manager
       ActionDecrypt = 2
     }
     private readonly IEnumRepository enumRepository;
+    private readonly ICloudFileManager cloudFileManager;
 
-    public TemplateManager(ITemplateRepository templateRepository, IEnumRepository enumRepository)
+    public TemplateManager(ITemplateRepository templateRepository, IEnumRepository enumRepository, ICloudFileManager cloudFileManager)
     {
+      this.cloudFileManager = cloudFileManager;
       this.enumRepository = enumRepository;
       this.repository = templateRepository;
     }
@@ -37,7 +39,7 @@ namespace Template_WebAPI.Manager
       {
         return new Tuple<ErrorResponse, Template>(new ErrorResponse(400.1, $"The Template name \"{template.Name}\" is already in use."), null);
       }
-
+      await cloudFileManager.UploadTemplateXMLFileAsync(template);
       await repository.AddAsync(template);
       return new Tuple<ErrorResponse, Template>(null, template);
     }
@@ -170,7 +172,7 @@ namespace Template_WebAPI.Manager
             IsRaw = bool.Parse(fileTypeData.IsRaw),
             IsXML = bool.Parse(fileTypeData.IsXML)
           };
-          
+
           retVal.TemplateInputMapping.Add(new TemplateInputMapping
           {
             id = repository.GenerateTemplateId(),

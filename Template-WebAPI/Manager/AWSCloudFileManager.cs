@@ -10,7 +10,7 @@ namespace Template_WebAPI.Manager
 {
   public class AWSCloudFileManager : ICloudFileManager
   {
-    private string bucketName = Environment.GetEnvironmentVariable("AWSS3_BUCKET_NAME");
+    private string bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
     private DateTime experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
 
     private readonly IAmazonS3 awsS3;

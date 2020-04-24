@@ -14,16 +14,16 @@ namespace Template_WebAPI.Events
       this.repository = eventSourceRepository;
     }
 
-    public async Task<Tuple<ErrorResponse, IEnumerable<Model.Events>>> GetAllAsync()
+    public async Task<Tuple<ErrorResponse, IEnumerable<Model.Events>>> GetAllEventsAsync()
     {
-      var events = await repository.GetAllAsync();
+      var events = await repository.GetAllEventsAsync();
       return new Tuple<ErrorResponse, IEnumerable<Model.Events>>(null, events);
     }
 
-    public async Task<Tuple<ErrorResponse, Model.Events>> GetAllCreatedAfterIdAsync(string eventId)
+    public async Task<Tuple<ErrorResponse, IEnumerable<Model.Events>>> GetAllCreatedAfterIdAsync(string eventId)
     {
-      var events = await repository.GetByIdAsync(eventId);
-      return new Tuple<ErrorResponse, Model.Events>(null, events);
+      var events = await repository.GetNewerEventsUsingIdAsync(eventId);
+      return new Tuple<ErrorResponse, IEnumerable<Model.Events>>(null, events);
     }
   }
 }

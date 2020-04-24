@@ -33,15 +33,16 @@ namespace Template_WebAPI.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Model.Events>>> GetAllEventsAsync()
     {
-      var events = await _eventsManager.GetAllAsync();
+      var events = await _eventsManager.GetAllEventsAsync();
       return HandInvalidRequest<IEnumerable<Model.Events>>(events, HttpMethod.Get);
     }
 
     [HttpGet]
     [Route("{eventId:length(24)}")]
-    public ActionResult<IEnumerable<Model.Events>> GetEventUsingIdAsync(string eventId)
+    public async Task<ActionResult<IEnumerable<Model.Events>>> GetEventUsingIdAsync(string eventId)
     {
-      return Ok();
+      var eventsResult = await _eventsManager.GetAllCreatedAfterIdAsync(eventId);
+      return HandInvalidRequest<IEnumerable<Model.Events>>(eventsResult, HttpMethod.Get);
     }
 
     private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, Model.Events> createResult, HttpMethod method)

@@ -6,6 +6,7 @@ namespace Template_WebAPI.Events
 {
   public interface IEventSourceRepository : IBaseRepository<Model.Events>
   {
-    Task<IEnumerable<Model.Events>> GetAllAsync();
+    Task<IEnumerable<Model.Events>> GetAllEventsAsync();
+    Task<IEnumerable<Model.Events>> GetNewerEventsUsingIdAsync(string id);
   }
 }

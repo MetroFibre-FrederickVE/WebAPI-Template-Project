@@ -1,3 +1,7 @@
+Dockerfile
+[b|B]in
+[O|o]bj
+
 **/.classpath
 **/.dockerignore
 **/.env

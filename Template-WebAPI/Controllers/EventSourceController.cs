@@ -24,7 +24,7 @@ namespace Template_WebAPI.Controllers
     }
 
     [HttpGet]
-    [Route("event/eventtypes")]
+    [Route("eventtypes")]
     public ActionResult<IEnumerable<EventTypes>> GetEventTypesAsync()
     {
       return Ok(_enumExtensions.GetValues<EventTypes>());
@@ -38,7 +38,7 @@ namespace Template_WebAPI.Controllers
     }
 
     [HttpGet]
-    [Route("event/{eventId}")]
+    [Route("{eventId:length(24)}")]
     public ActionResult<IEnumerable<Model.Events>> GetEventUsingIdAsync(string eventId)
     {
       return Ok();

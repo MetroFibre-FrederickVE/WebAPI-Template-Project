@@ -20,7 +20,7 @@ namespace Template_WebAPI.Events
       return new Tuple<ErrorResponse, IEnumerable<Model.Events>>(null, events);
     }
 
-    public async Task<Tuple<ErrorResponse, Model.Events>> GetUsingIdAsync(string eventId)
+    public async Task<Tuple<ErrorResponse, Model.Events>> GetAllCreatedAfterIdAsync(string eventId)
     {
       var events = await repository.GetByIdAsync(eventId);
       return new Tuple<ErrorResponse, Model.Events>(null, events);

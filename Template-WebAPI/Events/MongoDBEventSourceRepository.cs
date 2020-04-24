@@ -1,8 +1,6 @@
-﻿using System;
+﻿using MongoDB.Driver;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Events
@@ -13,5 +11,13 @@ namespace Template_WebAPI.Events
     {
 
     }
+
+    public async Task<IEnumerable<Model.Events>> GetAllAsync()
+    {
+      var all = _dbCollection.Find(Builders<Model.Events>.Filter.Empty).Limit(50);
+      return await all.ToListAsync();
+    }
+
+
   }
 }

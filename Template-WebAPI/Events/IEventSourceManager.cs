@@ -8,6 +8,6 @@ namespace Template_WebAPI.Events
   public interface IEventSourceManager
   {
     Task<Tuple<ErrorResponse, IEnumerable<Model.Events>>> GetAllAsync();
-    Task<Tuple<ErrorResponse, Model.Events>> GetUsingIdAsync(string eventId);
+    Task<Tuple<ErrorResponse, Model.Events>> GetAllCreatedAfterIdAsync(string eventId);
   }
 }

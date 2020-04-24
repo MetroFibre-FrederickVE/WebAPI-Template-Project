@@ -1,9 +1,0 @@
-﻿namespace Template_WebAPI.Models
-{
-    public class TemplateDatabaseSettings : ITemplateDatabaseSettings
-    {
-        public string CollectionName { get; set; }
-        public string ConnectionString { get; set; }
-        public string DatabaseName { get; set; }
-    }
-}

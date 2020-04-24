@@ -7,8 +7,11 @@ using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Events
 {
-  public interface IEventSourceRepository : IBaseRepository<Model.Events>
+  public class MongoDBEventSourceRepository : BaseRepository<Model.Events>, IEventSourceRepository
   {
+    public MongoDBEventSourceRepository(IMongoContext context) : base(context)
+    {
 
+    }
   }
 }

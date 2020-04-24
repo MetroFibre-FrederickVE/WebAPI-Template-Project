@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Template_WebAPI.Event;
 using Template_WebAPI.Events;
+using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers
@@ -27,16 +31,39 @@ namespace Template_WebAPI.Controllers
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EventTypes>> GetAllEventsAsync()
+    public async Task<ActionResult<IEnumerable<Model.Events>>> GetAllEventsAsync()
     {
-      return Ok();
+      var events = await _eventsManager.GetAllAsync();
+      return HandInvalidRequest<IEnumerable<Model.Events>>(events, HttpMethod.Get);
     }
 
     [HttpGet]
     [Route("event/{eventId}")]
-    public ActionResult<IEnumerable<EventTypes>> GetEventUsingIdAsync(string eventId)
+    public ActionResult<IEnumerable<Model.Events>> GetEventUsingIdAsync(string eventId)
     {
       return Ok();
     }
+
+    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, Model.Events> createResult, HttpMethod method)
+    {
+      if (createResult.Item1 != null)
+      {
+        if (createResult.Item1.ResponseCode < 401)
+        {
+          return BadRequest(createResult.Item1);
+        }
+        if (createResult.Item1.ResponseCode == 404)
+        {
+          return NotFound();
+        }
+      }
+      return Ok(createResult.Item2);
+    }
+
+    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, IEnumerable<Model.Events>> createResult, HttpMethod method)
+    {
+      return Ok(createResult.Item2);
+    }
+
   }
 }

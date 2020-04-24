@@ -5,7 +5,7 @@ using Template_WebAPI.Enums;
 
 namespace Template_WebAPI.Model
 {
-  public class EventsModel
+  public class Events
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]

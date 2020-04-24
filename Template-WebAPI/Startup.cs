@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Template_WebAPI.Events;
 using Template_WebAPI.Manager;
 using Template_WebAPI.Repository;
 
@@ -38,6 +39,8 @@ namespace Template_WebAPI
       services.AddSingleton<IEnumRepository, EnumRepository>();
       services.AddSingleton<ICloudFileManager, AWSCloudFileManager>();
       services.AddHostedService<TemplateDraftUploadDirCleaner>();
+      services.AddSingleton<IEventSourceManager, EventSourceManager>();
+      services.AddSingleton<IEventSourceRepository, MongoDBEventSourceRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

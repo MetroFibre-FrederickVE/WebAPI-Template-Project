@@ -24,7 +24,8 @@ namespace Template_WebAPI.Manager
     {
       var folderName = Path.Combine("Resources", "File");
       var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-      var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
+      var fileName = Path.Combine(pathToTemplateFile,$"{template.Id}.xml");
+      // var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
 
       var fileTransferUtility = new TransferUtility(awsS3);
 

@@ -6,7 +6,7 @@ using System;
 
 namespace Template_WebAPI.Model
 {
-  public class Events
+  public class TemplateEvent
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -23,7 +23,7 @@ namespace Template_WebAPI.Model
     public Template Template { get; set; }
 
     [Required(ErrorMessage = "{0} is a mandatory field")]
-    public EnumValue EventType { get; set; }
+    public EventType EventType { get; set; }
 
     public double ToUnixTime(string objId)
     {

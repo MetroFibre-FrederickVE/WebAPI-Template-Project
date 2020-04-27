@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Template_WebAPI.Event;
+using Template_WebAPI.Enums;
 using Template_WebAPI.Events;
 using Template_WebAPI.Model;
 using Template_WebAPI.Repository;
@@ -25,27 +25,27 @@ namespace Template_WebAPI.Controllers
 
     [HttpGet]
     [Route("eventtypes")]
-    public ActionResult<IEnumerable<EventTypes>> GetEventTypesAsync()
+    public ActionResult<IEnumerable<EventType>> GetEventTypesAsync()
     {
-      return Ok(_enumExtensions.GetValues<EventTypes>());
+      return Ok(_enumExtensions.GetValues<EventType>());
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Model.Events>>> GetAllEventsAsync()
+    public async Task<ActionResult<IEnumerable<Model.TemplateEvent>>> GetAllEventsAsync()
     {
       var events = await _eventsManager.GetAllEventsAsync();
-      return HandInvalidRequest<IEnumerable<Model.Events>>(events, HttpMethod.Get);
+      return HandInvalidRequest<IEnumerable<Model.TemplateEvent>>(events, HttpMethod.Get);
     }
 
     [HttpGet]
     [Route("{eventId:length(24)}")]
-    public async Task<ActionResult<IEnumerable<Model.Events>>> GetEventUsingIdAsync(string eventId)
+    public async Task<ActionResult<IEnumerable<Model.TemplateEvent>>> GetEventUsingIdAsync(string eventId)
     {
       var eventsResult = await _eventsManager.GetAllCreatedAfterIdAsync(eventId);
-      return HandInvalidRequest<IEnumerable<Model.Events>>(eventsResult, HttpMethod.Get);
+      return HandInvalidRequest<IEnumerable<Model.TemplateEvent>>(eventsResult, HttpMethod.Get);
     }
 
-    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, Model.Events> createResult, HttpMethod method)
+    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, Model.TemplateEvent> createResult, HttpMethod method)
     {
       if (createResult.Item1 != null)
       {
@@ -61,7 +61,7 @@ namespace Template_WebAPI.Controllers
       return Ok(createResult.Item2);
     }
 
-    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, IEnumerable<Model.Events>> createResult, HttpMethod method)
+    private ActionResult<T> HandInvalidRequest<T>(Tuple<ErrorResponse, IEnumerable<Model.TemplateEvent>> createResult, HttpMethod method)
     {
       return Ok(createResult.Item2);
     }

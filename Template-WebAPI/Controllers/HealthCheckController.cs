@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Template_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("templatemanagement/v1/[controller]")]
     [ApiController]
     public class HealthCheckController : ControllerBase
     {

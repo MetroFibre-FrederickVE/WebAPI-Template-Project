@@ -10,12 +10,12 @@ namespace Template_WebAPI.Model
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string EventId { get; set; }
+    public string Id { get; set; }
 
     [BsonRepresentation(BsonType.Double)]
     public double CreatedAt
     {
-      get {return ToUnixTime(EventId); }
+      get {return ToUnixTime(Id); }
       set { }
     }
 

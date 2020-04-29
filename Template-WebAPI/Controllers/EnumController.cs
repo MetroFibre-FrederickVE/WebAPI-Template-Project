@@ -5,7 +5,7 @@ using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers
 {
-  [Route("api/[controller]")]
+  [Route("templatemanagement/v1/[controller]")]
   [ApiController]
   public class EnumController : ControllerBase
   {

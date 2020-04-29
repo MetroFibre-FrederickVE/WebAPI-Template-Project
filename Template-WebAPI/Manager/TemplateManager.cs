@@ -98,6 +98,7 @@ namespace Template_WebAPI.Manager
     }
 
     await repository.RemoveProjectFromTemplate(template.Id, projectId);
+    template = await repository.GetByIdAsync(templateId);
     await eventSourceManager.UpdateTemplateEvent(template);
 
     return new Tuple<ErrorResponse, Template>(null, null);

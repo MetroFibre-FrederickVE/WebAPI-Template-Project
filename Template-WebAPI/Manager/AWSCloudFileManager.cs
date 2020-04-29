@@ -11,7 +11,7 @@ namespace Template_WebAPI.Manager
   public class AWSCloudFileManager : ICloudFileManager
   {
     private string bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
-    private DateTime experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
+    private DateTime experationTime;
 
     private readonly IAmazonS3 awsS3;
 
@@ -34,6 +34,7 @@ namespace Template_WebAPI.Manager
 
     public async Task<string> RetrieveSignedURL(string templateId)
     {
+      experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
       GetPreSignedUrlRequest requestToBeSigned = new GetPreSignedUrlRequest
       {
         BucketName = bucketName,

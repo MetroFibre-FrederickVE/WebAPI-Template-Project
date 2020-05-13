@@ -31,5 +31,6 @@ namespace Template_WebAPI.Model
     public string[] ProjectId { get; set; }
 
     public List<TemplateInputMapping> TemplateInputMapping { get;set; }
+    public string Version { get; set; }
   }
 }

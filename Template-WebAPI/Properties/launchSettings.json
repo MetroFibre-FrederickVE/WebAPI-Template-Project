@@ -31,10 +31,10 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGO_CONNECTION_STRING": "localhost",
-        "AWS_S3_BUCKET_NAME": "gsi-tempaltes",
-        "AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES": "25"
+        "AWS_S3_BUCKET_NAME": "gsi-templates",
+        "AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES": "120"
       },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      "applicationUrl": "https://localhost:5001;http://localhost:5009"
     }
   }
 }

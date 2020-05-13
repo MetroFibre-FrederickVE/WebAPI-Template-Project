@@ -149,7 +149,7 @@ namespace Template_WebAPI.Manager
     {
       var retVal = new Template();
       retVal.Id = repository.GenerateTemplateId();
-      var fileName = $"{retVal.Id}.xml";
+      var fileName = $"{retVal.Id}";
       var fullPath = Path.Combine(pathToSave, fileName);
       var dbPath = Path.Combine(folderName, fileName);
 
@@ -159,7 +159,7 @@ namespace Template_WebAPI.Manager
       }
       var defaultSensor = enumRepository.GetValues<Sensor>()[0];
       var legacyTemplate = ConvertXMLFileToXmlTemplate(fullPath);
-
+      retVal.Version = legacyTemplate.GroupNames.TemplateGroups.TemplateGroupRow.Template.Version;
       retVal.TemplateInputMapping = new List<TemplateInputMapping>();
       retVal.Name = legacyTemplate.GroupNames.Title;
       foreach (var inputOutput in legacyTemplate.GroupNames.TemplateInputOutput.IO)

@@ -24,11 +24,8 @@ namespace Template_WebAPI.Manager
     {
       var folderName = Path.Combine("Resources", "File");
       var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-      var fileName = Path.Combine(pathToTemplateFile,$"{template.Id}.xml");
-      // var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
-
+      var fileName = Path.Combine(pathToTemplateFile,$"{template.Id}");
       var fileTransferUtility = new TransferUtility(awsS3);
-
       await fileTransferUtility.UploadAsync(fileName, bucketName);
     }
 
@@ -38,7 +35,7 @@ namespace Template_WebAPI.Manager
       GetPreSignedUrlRequest requestToBeSigned = new GetPreSignedUrlRequest
       {
         BucketName = bucketName,
-        Key = templateId + ".xml",
+        Key = templateId,
         Expires = experationTime
       };
 

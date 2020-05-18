@@ -27,7 +27,7 @@
     "Template_WebAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/template",
+      "launchUrl": "templatemanagement/v1/template",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGO_CONNECTION_STRING": "localhost",

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Template_WebAPI.Controllers
 {
-    [Route("templatemanagement/v1/[controller]")]
-    [ApiController]
-    public class HealthCheckController : ControllerBase
-    {
+  //[Authorize]
+  [Route("templatemanagement/v1/[controller]")]
+  [ApiController]
+  public class HealthCheckController : ControllerBase
+  {
     [HttpGet]
     public ActionResult<string> GetApiStatus()
     {
@@ -18,5 +15,5 @@ namespace Template_WebAPI.Controllers
     }
   }
 
-    
+
 }

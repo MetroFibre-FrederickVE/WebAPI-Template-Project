@@ -8,9 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Template_WebAPI.Authentication;
 using Template_WebAPI.Events;
 using Template_WebAPI.Manager;
 using Template_WebAPI.Repository;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Template_WebAPI
 {
@@ -41,6 +45,33 @@ namespace Template_WebAPI
       services.AddHostedService<TemplateDraftUploadDirCleaner>();
       services.AddSingleton<IEventSourceManager, EventSourceManager>();
       services.AddSingleton<IEventSourceRepository, MongoDBEventSourceRepository>();
+
+      var appSettingsSection = Configuration.GetSection("AppSettings");
+      services.Configure<AppSettings>(appSettingsSection);
+
+      var appSettings = appSettingsSection.Get<AppSettings>();
+      var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+      services.AddAuthentication(x =>
+      {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
+        .AddJwtBearer(x =>
+        {
+          x.RequireHttpsMetadata = false;
+          x.SaveToken = true;
+          x.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            RequireExpirationTime = true,
+            ValidateLifetime = true
+          };
+        });
+
+      // Add new service here: (userService)
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +92,7 @@ namespace Template_WebAPI
 
       app.UseRouting();
 
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>

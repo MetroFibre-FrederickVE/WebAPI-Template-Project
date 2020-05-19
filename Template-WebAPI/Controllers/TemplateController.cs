@@ -5,9 +5,11 @@ using Template_WebAPI.Model;
 using System;
 using Template_WebAPI.Manager;
 using System.Net.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Template_WebAPI.Controllers
 {
+  [Authorize]
   [Route("templatemanagement/v1/[controller]")]
   [ApiController]
   public class TemplateController : ControllerBase

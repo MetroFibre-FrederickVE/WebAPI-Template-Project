@@ -15,6 +15,7 @@ using Template_WebAPI.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
 
 namespace Template_WebAPI
 {
@@ -46,11 +47,8 @@ namespace Template_WebAPI
       services.AddSingleton<IEventSourceManager, EventSourceManager>();
       services.AddSingleton<IEventSourceRepository, MongoDBEventSourceRepository>();
 
-      var appSettingsSection = Configuration.GetSection("AppSettings");
-      services.Configure<AppSettings>(appSettingsSection);
-
-      var appSettings = appSettingsSection.Get<AppSettings>();
-      var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+      var authenticationEnvironmentVariable = Environment.GetEnvironmentVariable("JWT_SECRET");
+      var key = Encoding.ASCII.GetBytes(authenticationEnvironmentVariable);
       services.AddAuthentication(x =>
       {
         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,8 +68,6 @@ namespace Template_WebAPI
             ValidateLifetime = true
           };
         });
-
-      // Add new service here: (userService)
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

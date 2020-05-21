@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Template_WebAPI.Authentication;
 using Template_WebAPI.Enums;
 using Template_WebAPI.Repository;
 
@@ -19,6 +20,7 @@ namespace Template_WebAPI.Controllers
       _enumExtensions = enumExtensions;
     }
 
+    [Authorize(Roles = Role.User)]
     [HttpGet]
     [Route("sensor")]
     public ActionResult<IEnumerable<Sensor>> GetSensorAsync()
@@ -26,6 +28,7 @@ namespace Template_WebAPI.Controllers
       return Ok(_enumExtensions.GetValues<Sensor>());
     }
 
+    [Authorize(Roles = Role.User)]
     [HttpGet]
     [Route("processlevel")]
     public ActionResult<IEnumerable<ProcessLevel>> GetProcessAsync()

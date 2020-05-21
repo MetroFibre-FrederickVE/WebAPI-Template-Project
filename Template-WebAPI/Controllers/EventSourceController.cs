@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Template_WebAPI.Authentication;
 using Template_WebAPI.Enums;
 using Template_WebAPI.Events;
 using Template_WebAPI.Model;

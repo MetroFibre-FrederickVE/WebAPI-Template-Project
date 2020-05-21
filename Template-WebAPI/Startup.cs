@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
+using Microsoft.CodeAnalysis.Options;
 
 namespace Template_WebAPI
 {
@@ -69,12 +70,11 @@ namespace Template_WebAPI
           };
         });
 
-      services.AddAuthorization((options) => 
-      {
-        options.AddPolicy("TestPolicy", policybuilder =>
+      services.AddAuthorization((options) => {
+        options.AddPolicy("TestPolicy", policy =>
         {
-          policybuilder.RequireAuthenticatedUser();
-          policybuilder.RequireClaim("roles", "Admin");
+          policy.RequireAuthenticatedUser();
+          policy.Requirements.Add(new ClaimsRequirement("Admin"));
 
         });
       });

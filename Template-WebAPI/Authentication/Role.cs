@@ -6,7 +6,7 @@ namespace Template_WebAPI.Authentication
   public static class Role
   {
     public const string Admin = "Admin";
-    public const string User = "User";
+    public const string User = "Claims";
 
     // TODO: For extension
     public static string GetClaim(string token, string claimType)
@@ -20,7 +20,6 @@ namespace Template_WebAPI.Authentication
 
     public class Rootobject
     {
-
       public string iss { get; set; }
       public string aud { get; set; }
       public long iat { get; set; }

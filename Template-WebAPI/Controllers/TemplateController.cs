@@ -8,6 +8,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Template_WebAPI.Authentication;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace Template_WebAPI.Controllers
 {
@@ -25,8 +26,8 @@ namespace Template_WebAPI.Controllers
       this.cloudFileManager = cloudFileManager;
     }
 
-    //[Authorize(Roles = "User")]
-    [Authorize(Roles = demojson.Rootobject.Group.roles)]
+    //[Authorize(Roles = "Claims")]
+    //[Authorize(Policy = "TestPolicy")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {
@@ -34,7 +35,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<IEnumerable<Template>>(templates, HttpMethod.Get);
     }
 
-    [Authorize(Roles = Role.Admin)]
+    [Authorize(Policy = "TestPolicy")]
     [HttpGet("{templateId:length(24)}", Name = "GetTemplate")]
     public async Task<ActionResult<Template>> GetUsingIdAsync(string templateId)
     {

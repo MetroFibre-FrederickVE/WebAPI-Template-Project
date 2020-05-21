@@ -6,6 +6,7 @@ using System;
 using Template_WebAPI.Manager;
 using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
+using Template_WebAPI.Authentication;
 
 namespace Template_WebAPI.Controllers
 {
@@ -23,6 +24,8 @@ namespace Template_WebAPI.Controllers
       this.cloudFileManager = cloudFileManager;
     }
 
+    //[Authorize(Roles = "User")]
+    [Authorize(Roles = Role.User)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {
@@ -30,6 +33,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<IEnumerable<Template>>(templates, HttpMethod.Get);
     }
 
+    [Authorize(Roles = Role.Admin)]
     [HttpGet("{templateId:length(24)}", Name = "GetTemplate")]
     public async Task<ActionResult<Template>> GetUsingIdAsync(string templateId)
     {

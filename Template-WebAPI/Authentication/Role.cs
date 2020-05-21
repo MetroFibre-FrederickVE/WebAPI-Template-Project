@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace Template_WebAPI.Authentication
 {
-  public class AuthenticationModel
+  public static class Role
   {
+    public const string Admin = "Admin";
+    public const string User = "User";
   }
 }

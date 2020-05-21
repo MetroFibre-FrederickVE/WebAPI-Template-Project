@@ -7,6 +7,7 @@ using Template_WebAPI.Manager;
 using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Template_WebAPI.Authentication;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Template_WebAPI.Controllers
 {

@@ -68,6 +68,16 @@ namespace Template_WebAPI
             ValidateLifetime = true
           };
         });
+
+      services.AddAuthorization((options) => 
+      {
+        options.AddPolicy("TestPolicy", policybuilder =>
+        {
+          policybuilder.RequireAuthenticatedUser();
+          policybuilder.RequireClaim("roles", "Admin");
+
+        });
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

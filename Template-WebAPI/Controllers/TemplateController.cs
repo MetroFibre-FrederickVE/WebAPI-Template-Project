@@ -26,7 +26,7 @@ namespace Template_WebAPI.Controllers
     }
 
     //[Authorize(Roles = "User")]
-    [Authorize(Roles = Role.User)]
+    [Authorize(Roles = demojson.Rootobject.Group.roles)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {

@@ -14,6 +14,4 @@ namespace Template_WebAPI.Controllers
       return Ok("Template services up and running.");
     }
   }
-
-
 }

@@ -16,7 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
-using Microsoft.CodeAnalysis.Options;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 
 namespace Template_WebAPI
 {
@@ -47,6 +48,7 @@ namespace Template_WebAPI
       services.AddHostedService<TemplateDraftUploadDirCleaner>();
       services.AddSingleton<IEventSourceManager, EventSourceManager>();
       services.AddSingleton<IEventSourceRepository, MongoDBEventSourceRepository>();
+      services.AddHttpContextAccessor();
 
       var authenticationEnvironmentVariable = Environment.GetEnvironmentVariable("JWT_SECRET");
       var key = Encoding.ASCII.GetBytes(authenticationEnvironmentVariable);
@@ -70,14 +72,21 @@ namespace Template_WebAPI
           };
         });
 
+      services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
+
+      var applicationOptions = Configuration
+        .GetSection("ApplicationOptions")
+        .Get<ApplicationOptions>();
+
       services.AddAuthorization((options) => {
-        options.AddPolicy("TestPolicy", policy =>
+        options.AddPolicy("TestPolicy:EntityId - 5af2010d580e4ab08cbec807", policy =>
         {
           policy.RequireAuthenticatedUser();
-          policy.Requirements.Add(new ClaimsRequirement("Admin"));
-
+          policy.Requirements.Add(new ClaimsRequirment("5af2010d580e4ab08cbec807"));
         });
       });
+
+      services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,44 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using MongoDB.Bson;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Template_WebAPI.Authentication
 {
-  internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirement>
+  internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirment>
   {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirement requirement)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment requirement)
     {
-      // Bail out if the office number claim isn't present
-      if (!context.User.HasClaim(c => c.Type == "office"))
-      {
-        return Task.CompletedTask;
-      }
+      var roles = ((ClaimsIdentity)context.User.Identity).Claims.Where(c => c.Type == "claims").Select(c => c.Value).ToJson();
 
-      // Bail out if we can't read an int from the 'office' claim
-      int officeNumber;
-      if (!int.TryParse(context.User.FindFirst(c => c.Type == "office").Value, out officeNumber))
+      if (roles.Contains("groups"))
       {
-        return Task.CompletedTask;
+        string newString = roles.Substring(roles.IndexOf("groups")).Trim();
+        if (newString.Contains(requirement.MatchingEntityId))
+        {
+          context.Succeed(requirement);
+        }
       }
-
-      // Finally, validate that the office number from the claim is not greater
-      // than the requirement's maximum
-      if (officeNumber <= requirement.Role)
-      {
-        // Mark the requirement as satisfied
-        context.Succeed(requirement);
-      }
-
       return Task.CompletedTask;
     }
   }
 
-  internal class ClaimsRequirement : IAuthorizationRequirement
-  {
-    public ClaimsRequirement(int claimRole)
-    {
-      Role = claimRole;
-    }
+  
 
-    public int Role { get; private set; }
-  }
 }

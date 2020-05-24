@@ -20,7 +20,7 @@ namespace Template_WebAPI.Controllers
       _enumExtensions = enumExtensions;
     }
 
-    [Authorize(Roles = Role.User)]
+    //[Authorize(Roles = Role.User)]
     [HttpGet]
     [Route("sensor")]
     public ActionResult<IEnumerable<Sensor>> GetSensorAsync()
@@ -28,7 +28,7 @@ namespace Template_WebAPI.Controllers
       return Ok(_enumExtensions.GetValues<Sensor>());
     }
 
-    [Authorize(Roles = Role.User)]
+    //[Authorize(Roles = Role.User)]
     [HttpGet]
     [Route("processlevel")]
     public ActionResult<IEnumerable<ProcessLevel>> GetProcessAsync()

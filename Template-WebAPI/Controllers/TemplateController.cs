@@ -47,7 +47,7 @@ namespace Template_WebAPI.Controllers
       return Ok(signedURL);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpPut("{templateId:length(24)}")]
     public async Task<ActionResult<Template>> UpdateAsync(Template templateIn, string templateId)
     {
@@ -55,7 +55,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(createResult, HttpMethod.Put);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpPost]
     public async Task<ActionResult<Template>> CreateAsync(Template template)
     {
@@ -63,7 +63,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(createResult, HttpMethod.Post);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpPost]
     [Route("{templateId}/project")]
     [Route("{templateId}/project/{projectId}")]
@@ -73,7 +73,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpPost]
     [Route("{templateId}/project/batch")]
     public async Task<ActionResult<Template>> CreateProjectAssociationAsync(string templateId, List<string> projectIds)
@@ -92,7 +92,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(updatedTemplateResult, HttpMethod.Post);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpPost]
     [Route("{templateId}/input/batch")]
     public async Task<ActionResult<List<TemplateInputMapping>>> CreateTemplateInputAsync(string templateId, List<TemplateInputMapping> templateInputs)
@@ -111,7 +111,7 @@ namespace Template_WebAPI.Controllers
       return Ok(retVal);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpPost]
     [Route("file")]
     [HttpPost, DisableRequestSizeLimit]
@@ -122,7 +122,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpDelete("{templateId:length(24)}")]
     public async Task<ActionResult<Template>> DeleteByIdAsync(string templateId)
     {
@@ -130,7 +130,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(deleteResult, HttpMethod.Delete);
     }
 
-    //[Authorize(Roles = Role.Admin)]
+    
     [HttpDelete]    
     [Route("{templateId}/project/{projectId}")]
     public async Task<ActionResult<Template>> DeleteProjectIdAsync(string templateId, string projectId)

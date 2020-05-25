@@ -79,10 +79,10 @@ namespace Template_WebAPI
         .Get<ApplicationOptions>();
 
       services.AddAuthorization((options) => {
-        options.AddPolicy("TestPolicy:EntityId - 5af2010d580e4ab08cbec807", policy =>
+        options.AddPolicy("TestPolicy:Claim - Class Viewer", policy =>
         {
           policy.RequireAuthenticatedUser();
-          policy.Requirements.Add(new ClaimsRequirment("5af2010d580e4ab08cbec807"));
+          policy.Requirements.Add(new ClaimsRequirment("Class Viewer"));
         });
       });
 

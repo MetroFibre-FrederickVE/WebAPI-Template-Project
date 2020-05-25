@@ -15,7 +15,7 @@ namespace Template_WebAPI.Authentication
       if (claimsFieldValue.Contains("groups"))
       {
         string strOfGroupField = claimsFieldValue.Substring(claimsFieldValue.IndexOf("groups")).Trim();
-        if (strOfGroupField.Contains(policyRequirement.MatchingEntityId))
+        if (strOfGroupField.Contains(policyRequirement.MatchingRole))
         {
           context.Succeed(policyRequirement);
         }

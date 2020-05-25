@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Template_WebAPI.Controllers
 {
-  //[Authorize]
   [Route("templatemanagement/v1/[controller]")]
   [ApiController]
   public class HealthCheckController : ControllerBase

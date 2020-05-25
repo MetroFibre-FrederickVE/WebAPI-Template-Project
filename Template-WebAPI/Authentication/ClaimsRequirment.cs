@@ -4,11 +4,11 @@ namespace Template_WebAPI.Authentication
 {
   public class ClaimsRequirment : IAuthorizationRequirement
   {
-    public ClaimsRequirment(string entityId)
+    public ClaimsRequirment(string role)
     {
-      MatchingEntityId = entityId;
+      MatchingRole = role;
     }
 
-    public string MatchingEntityId { get; private set; }
+    public string MatchingRole { get; private set; }
   }
 }

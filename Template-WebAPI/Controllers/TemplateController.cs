@@ -31,7 +31,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<IEnumerable<Template>>(templates, HttpMethod.Get);
     }
 
-    [Authorize(Policy = "TestPolicy:EntityId - 5af2010d580e4ab08cbec807")]
+    [Authorize(Policy = "TestPolicy:Claim - Class Viewer")]
     [HttpGet("{templateId:length(24)}", Name = "GetTemplate")]
     public async Task<ActionResult<Template>> GetUsingIdAsync(string templateId)
     {

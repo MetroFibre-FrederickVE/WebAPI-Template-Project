@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Client;
+using Microsoft.Extensions.Options;
+using Microsoft.CodeAnalysis.Options;
 
 namespace Template_WebAPI
 {

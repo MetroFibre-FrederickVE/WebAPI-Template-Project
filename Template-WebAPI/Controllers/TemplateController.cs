@@ -23,7 +23,6 @@ namespace Template_WebAPI.Controllers
       this.cloudFileManager = cloudFileManager;
     }
 
-    //[Authorize(Policy = "TestPolicy")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {

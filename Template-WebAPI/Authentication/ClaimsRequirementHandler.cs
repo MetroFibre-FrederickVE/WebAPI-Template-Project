@@ -8,16 +8,16 @@ namespace Template_WebAPI.Authentication
 {
   internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirment>
   {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment requirement)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
     {
-      var roles = ((ClaimsIdentity)context.User.Identity).Claims.Where(c => c.Type == "claims").Select(c => c.Value).ToJson();
+      var claimsFieldValue = ((ClaimsIdentity)context.User.Identity).Claims.Where(c => c.Type == "claims").Select(c => c.Value).ToJson();
 
-      if (roles.Contains("groups"))
+      if (claimsFieldValue.Contains("groups"))
       {
-        string newString = roles.Substring(roles.IndexOf("groups")).Trim();
-        if (newString.Contains(requirement.MatchingEntityId))
+        string strOfGroupField = claimsFieldValue.Substring(claimsFieldValue.IndexOf("groups")).Trim();
+        if (strOfGroupField.Contains(policyRequirement.MatchingEntityId))
         {
-          context.Succeed(requirement);
+          context.Succeed(policyRequirement);
         }
       }
       return Task.CompletedTask;

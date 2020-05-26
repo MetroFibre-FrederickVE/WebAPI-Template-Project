@@ -26,6 +26,7 @@ namespace Template_WebAPI.Controllers
       _eventsManager = eventsManager;
     }
 
+    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
     [HttpGet]
     [Route("eventtypes")]
     public ActionResult<IEnumerable<EventType>> GetEventTypesAsync()
@@ -33,7 +34,7 @@ namespace Template_WebAPI.Controllers
       return Ok(_enumExtensions.GetValues<EventType>());
     }
 
-    
+    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Model.TemplateEvent>>> GetAllEventsAsync()
     {
@@ -41,7 +42,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<IEnumerable<Model.TemplateEvent>>(events, HttpMethod.Get);
     }
 
-    
+    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
     [HttpGet]
     [Route("{eventId:length(24)}")]
     public async Task<ActionResult<IEnumerable<Model.TemplateEvent>>> GetEventUsingIdAsync(string eventId)

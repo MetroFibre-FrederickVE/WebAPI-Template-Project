@@ -30,7 +30,6 @@ namespace Template_WebAPI
 
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
@@ -78,8 +77,8 @@ namespace Template_WebAPI
         .GetSection("ApplicationOptions")
         .Get<ApplicationOptions>();
 
-      services.AddAuthorization((options) => {
-        options.AddPolicy("TestPolicy:Claim - Class Viewer", policy =>
+      services.AddAuthorization((options_CV) => {
+        options_CV.AddPolicy("CustomClaimsPolicy - Authorization: Class Viewer", policy =>
         {
           policy.RequireAuthenticatedUser();
           policy.Requirements.Add(new ClaimsRequirment("Class Viewer"));
@@ -89,7 +88,6 @@ namespace Template_WebAPI
       services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       app.UseCors("ApiCorsPolicy");

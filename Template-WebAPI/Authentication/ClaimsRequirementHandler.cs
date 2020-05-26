@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MongoDB.Bson;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Collections.Generic;
 
 namespace Template_WebAPI.Authentication
 {
@@ -10,15 +10,31 @@ namespace Template_WebAPI.Authentication
   {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
     {
-      var claimsFieldValue = ((ClaimsIdentity)context.User.Identity).Claims.Where(c => c.Type == "claims").Select(c => c.Value).ToJson();
+      var tokenClaimsToList = context.User.Claims.Select(c => c.Value).ToList();
 
-      if (claimsFieldValue.Contains("groups"))
+      var claimsValue = tokenClaimsToList[4].Substring(0, tokenClaimsToList[4].Length);
+
+      var options = new JsonSerializerOptions
       {
-        string strOfGroupField = claimsFieldValue.Substring(claimsFieldValue.IndexOf("groups")).Trim();
-        if (strOfGroupField.Contains(policyRequirement.MatchingRole))
-        {
-          context.Succeed(policyRequirement);
-        }
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+      };
+
+      var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
+
+      List<string> listOfTokenClaims = new List<string>();
+
+      foreach(var item in claimsJsonModel.Groups.ElementAt(0).Roles)
+      {
+        var roleToString = item.RoleName.ToString();
+        listOfTokenClaims.Add(roleToString);
+      }
+
+      string policyRequirment = policyRequirement.MatchingRole;
+
+      if (listOfTokenClaims.Contains(policyRequirment))
+      {
+        context.Succeed(policyRequirement);
       }
       return Task.CompletedTask;
     }

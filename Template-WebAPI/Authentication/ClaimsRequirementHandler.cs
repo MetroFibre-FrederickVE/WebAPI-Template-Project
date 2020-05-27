@@ -22,17 +22,17 @@ namespace Template_WebAPI.Authentication
 
       var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
 
-      List<string> listOfTokenClaims = new List<string>();
+      List<string> collectionOfRolesFromToken = new List<string>();
 
-      foreach(var item in claimsJsonModel.Groups.ElementAt(0).Roles)
+      foreach(var groupRole in claimsJsonModel.Groups.ElementAt(0).Roles)
       {
-        var roleToString = item.RoleName.ToString();
-        listOfTokenClaims.Add(roleToString);
+        var roleToString = groupRole.RoleName.ToString();
+        collectionOfRolesFromToken.Add(roleToString);
       }
 
       string policyRequirment = policyRequirement.MatchingRole;
 
-      if (listOfTokenClaims.Contains(policyRequirment))
+      if (collectionOfRolesFromToken.Contains(policyRequirment))
       {
         context.Succeed(policyRequirement);
       }

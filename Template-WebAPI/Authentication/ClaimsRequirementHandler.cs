@@ -30,7 +30,7 @@ namespace Template_WebAPI.Authentication
         {
           foreach (var role in group.Roles)
           {
-            if (role.RoleName.ToString() == policyRequirment)
+            if (role.RoleName.ToString().Contains(policyRequirment))
             {
               context.Succeed(policyRequirement);
             }

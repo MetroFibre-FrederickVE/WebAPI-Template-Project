@@ -8,8 +8,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Template_WebAPI.Authentication;
+using Template_WebAPI.Events;
 using Template_WebAPI.Manager;
 using Template_WebAPI.Repository;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 
 namespace Template_WebAPI
 {
@@ -22,7 +30,6 @@ namespace Template_WebAPI
 
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
@@ -38,9 +45,49 @@ namespace Template_WebAPI
       services.AddSingleton<IEnumRepository, EnumRepository>();
       services.AddSingleton<ICloudFileManager, AWSCloudFileManager>();
       services.AddHostedService<TemplateDraftUploadDirCleaner>();
+      services.AddSingleton<IEventSourceManager, EventSourceManager>();
+      services.AddSingleton<IEventSourceRepository, MongoDBEventSourceRepository>();
+      services.AddHttpContextAccessor();
+
+      var authenticationEnvironmentVariable = Environment.GetEnvironmentVariable("JWT_SECRET");
+      var key = Encoding.ASCII.GetBytes(authenticationEnvironmentVariable);
+      services.AddAuthentication(x =>
+      {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
+        .AddJwtBearer(x =>
+        {
+          x.RequireHttpsMetadata = false;
+          x.SaveToken = true;
+          x.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            RequireExpirationTime = true,
+            ValidateLifetime = true
+          };
+        });
+
+      services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
+
+      var applicationOptions = Configuration
+        .GetSection("ApplicationOptions")
+        .Get<ApplicationOptions>();
+
+      services.AddAuthorization((options_CV) => {
+        options_CV.AddPolicy("CustomClaimsPolicy - Authorization: Class Viewer", policy =>
+        {
+          policy.RequireAuthenticatedUser();
+          policy.Requirements.Add(new ClaimsRequirment("Class Viewer"));
+        });
+      });
+
+      services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       app.UseCors("ApiCorsPolicy");
@@ -58,6 +105,7 @@ namespace Template_WebAPI
 
       app.UseRouting();
 
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Template_WebAPI.Authentication;
 using Template_WebAPI.Enums;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Controllers
 {
-  [Route("api/[controller]")]
+  [Authorize]
+  [Route("templatemanagement/v1/[controller]")]
   [ApiController]
   public class EnumController : ControllerBase
   {
@@ -17,6 +20,7 @@ namespace Template_WebAPI.Controllers
       _enumExtensions = enumExtensions;
     }
 
+    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
     [HttpGet]
     [Route("sensor")]
     public ActionResult<IEnumerable<Sensor>> GetSensorAsync()
@@ -24,6 +28,7 @@ namespace Template_WebAPI.Controllers
       return Ok(_enumExtensions.GetValues<Sensor>());
     }
 
+    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
     [HttpGet]
     [Route("processlevel")]
     public ActionResult<IEnumerable<ProcessLevel>> GetProcessAsync()

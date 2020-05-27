@@ -10,8 +10,8 @@ namespace Template_WebAPI.Manager
 {
   public class AWSCloudFileManager : ICloudFileManager
   {
-    private string bucketName = Environment.GetEnvironmentVariable("AWSS3_BUCKET_NAME");
-    private DateTime experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
+    private string bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
+    private DateTime experationTime;
 
     private readonly IAmazonS3 awsS3;
 
@@ -22,23 +22,20 @@ namespace Template_WebAPI.Manager
 
     public async Task UploadTemplateXMLFileAsync(Template template)
     {
-
       var folderName = Path.Combine("Resources", "File");
       var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-      var fileName = $@"{pathToTemplateFile}\{template.Id}.xml";
-
+      var fileName = Path.Combine(pathToTemplateFile,$"{template.Id}");
       var fileTransferUtility = new TransferUtility(awsS3);
-
       await fileTransferUtility.UploadAsync(fileName, bucketName);
-
     }
 
     public async Task<string> RetrieveSignedURL(string templateId)
     {
+      experationTime = DateTime.Now.AddMinutes(int.Parse(Environment.GetEnvironmentVariable("AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES")));
       GetPreSignedUrlRequest requestToBeSigned = new GetPreSignedUrlRequest
       {
         BucketName = bucketName,
-        Key = templateId + ".xml",
+        Key = templateId,
         Expires = experationTime
       };
 

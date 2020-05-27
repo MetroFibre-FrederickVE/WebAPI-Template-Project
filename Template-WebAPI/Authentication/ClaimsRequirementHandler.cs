@@ -33,6 +33,7 @@ namespace Template_WebAPI.Authentication
             if (role.RoleName.ToString().Contains(policyRequirment))
             {
               context.Succeed(policyRequirement);
+              return Task.CompletedTask;
             }
           }
         }

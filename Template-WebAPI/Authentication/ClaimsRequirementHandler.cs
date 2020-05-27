@@ -10,31 +10,37 @@ namespace Template_WebAPI.Authentication
   {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
     {
-      var tokenClaimsToList = context.User.Claims.Select(c => c.Value).ToList();
-
-      var claimsValue = tokenClaimsToList[4].Substring(0, tokenClaimsToList[4].Length);
-
-      var options = new JsonSerializerOptions
+      try
       {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = true
-      };
+        string policyRequirment = policyRequirement.MatchingRole;
 
-      var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
+        var tokenClaimsToList = context.User.Claims.Select(c => c.Value).ToList();
 
-      List<string> listOfTokenClaims = new List<string>();
+        var claimsValue = tokenClaimsToList[4].Substring(0, tokenClaimsToList[4].Length);
 
-      foreach(var item in claimsJsonModel.Groups.ElementAt(0).Roles)
-      {
-        var roleToString = item.RoleName.ToString();
-        listOfTokenClaims.Add(roleToString);
+        var options = new JsonSerializerOptions
+        {
+          PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+          WriteIndented = true
+        };
+
+        var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
+
+        foreach (var group in claimsJsonModel.Groups)
+        {
+          foreach (var role in group.Roles)
+          {
+            if (role.RoleName.ToString().Contains(policyRequirment))
+            {
+              context.Succeed(policyRequirement);
+              return Task.CompletedTask;
+            }
+          }
+        }
       }
-
-      string policyRequirment = policyRequirement.MatchingRole;
-
-      if (listOfTokenClaims.Contains(policyRequirment))
+      catch
       {
-        context.Succeed(policyRequirement);
+        return Task.CompletedTask;
       }
       return Task.CompletedTask;
     }

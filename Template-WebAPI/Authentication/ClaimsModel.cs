@@ -87,7 +87,12 @@ namespace Template_WebAPI.Authentication
     public string EntityId { get; set; }
 
     [JsonProperty("roles")]
-    public Role[] Roles { get; set; }
+    public GroupsRole[] Roles { get; set; }
+  }
+
+  public class GroupsRole
+  {
+    public string RoleName { get; set; }
   }
 
   public class Legacydata
@@ -98,11 +103,5 @@ namespace Template_WebAPI.Authentication
     public string Email { get; set; }
     public object Password { get; set; }
     public object ClientID { get; set; }
-  }
-
-  public class Role
-  {
-    [JsonProperty("roleName")]
-    public string RoleName { get; set; }
   }
 }

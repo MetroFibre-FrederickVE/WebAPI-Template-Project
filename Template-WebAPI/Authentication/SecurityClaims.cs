@@ -7,36 +7,36 @@ namespace Template_WebAPI.Authentication
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    public UpdatableRole[] Roles { get; set; }
-    public string[] Projects { get; set; }
-    public User[] Users { get; set; }
+    public string id { get; set; }
+    public UpdatableRole[] roles { get; set; }
+    public string[] projects { get; set; }
+    public User[] users { get; set; }
   }
 
   public class UpdatableRole
   {
-    public string Id { get; set; }
-    public string RoleName { get; set; }
-    public string Description { get; set; }
-    public Permissions Permissions { get; set; }
+    public string id { get; set; }
+    public string roleName { get; set; }
+    public string description { get; set; }
+    public Permissions permissions { get; set; }
   }
 
   public class Permissions
   {
-    public bool Read { get; set; }
-    public bool Write { get; set; }
+    public bool read { get; set; }
+    public bool write { get; set; }
   }
 
   public class User
   {
-    public string Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string[] AssociatedClientId { get; set; }
-    public UsersLegacydata LegacyData { get; set; }
-    public string[] AssociatedServiceProviderId { get; set; }
-    public string EntityId { get; set; }
+    public string id { get; set; }
+    public string firstName { get; set; }
+    public string lastName { get; set; }
+    public string email { get; set; }
+    public string[] associatedClientId { get; set; }
+    public UsersLegacydata legacyData { get; set; }
+    public string[] associatedServiceProviderId { get; set; }
+    public string entityId { get; set; }
   }
 
   public class UsersLegacydata
@@ -45,8 +45,8 @@ namespace Template_WebAPI.Authentication
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public object Password { get; set; }
+    public object password { get; set; }
     public object ClientID { get; set; }
-    public object PasswordHashed { get; set; }
+    public object passwordHashed { get; set; }
   }
 }

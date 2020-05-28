@@ -73,6 +73,9 @@ namespace Template_WebAPI
           };
         });
 
+      // 
+      services.AddSingleton<IClaimsRepository, MongoDBClaimsRepository>();
+      
       services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
 
       var applicationOptions = Configuration
@@ -83,6 +86,7 @@ namespace Template_WebAPI
         options_CV.AddPolicy("CustomClaimsPolicy - Authorization: Class Viewer", policy =>
         {
           policy.RequireAuthenticatedUser();
+          
           policy.Requirements.Add(new ClaimsRequirment("Class Viewer"));
         });
       });

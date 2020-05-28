@@ -3,12 +3,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Template_WebAPI.Authentication
 {
   internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirment>
   {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
+    private readonly IClaimsRepository _claimsRepository;
+
+    public ClaimsRequirementHandler(IClaimsRepository claimsRepository)
+    {
+      _claimsRepository = claimsRepository;
+    }
+
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
     {
       try
       {
@@ -26,6 +34,18 @@ namespace Template_WebAPI.Authentication
 
         var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
 
+        //
+        var grab = await _claimsRepository.GetSecurityClaimsAsync(claimsJsonModel.EntityId.ToString());
+
+        // replace elements in fields within claimsJsonModels
+        
+        //foreach(var role in grab)
+        //{
+        //  claimsJsonModel.Groups.Append(new Groups { EntityId = "", Roles = new GroupsRole[] { new GroupsRole { RoleName = role.RoleName } } });
+        //}
+
+        //
+
         foreach (var group in claimsJsonModel.Groups)
         {
           foreach (var role in group.Roles)
@@ -33,16 +53,17 @@ namespace Template_WebAPI.Authentication
             if (role.RoleName.ToString().Contains(policyRequirment))
             {
               context.Succeed(policyRequirement);
-              return Task.CompletedTask;
+              //break;
+              return;// Task.CompletedTask;
             }
           }
         }
       }
       catch
       {
-        return Task.CompletedTask;
+        return;// Task.CompletedTask;
       }
-      return Task.CompletedTask;
+      return;// Task.CompletedTask;
     }
   }
 

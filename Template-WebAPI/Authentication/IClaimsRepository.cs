@@ -5,6 +5,6 @@ namespace Template_WebAPI.Authentication
 {
   public interface IClaimsRepository
   {
-    Task<IEnumerable<SecurityClaims>> GetSecurityClaimsAsync(SecurityClaims securityClaims);
+    Task<List<GroupsRole>> GetSecurityClaimsAsync(string id);
   }
 }

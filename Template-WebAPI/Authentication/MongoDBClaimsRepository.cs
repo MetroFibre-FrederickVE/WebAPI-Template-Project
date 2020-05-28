@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,15 +13,28 @@ namespace Template_WebAPI.Authentication
     {
 
     }
-<<<<<<< Updated upstream
-=======
 
-    public async Task<IEnumerable<SecurityClaims>> GetSecurityClaimsAsync(SecurityClaims securityClaims)
+    public async Task<SecurityClaims> GetSecurityClaimsAsync(string id)
     {
-      var all = _dbCollection.Find(Builders<SecurityClaims>.Filter.Empty);
-      var allList = all.ToListAsync();
+      // entire collection
+      var all = await _dbCollection.Find(Builders<SecurityClaims>.Filter.Empty).ToListAsync();
+      
+      // for every document in collection
+      foreach(var post in all)
+      {
+        // for every user in document
+        foreach(var user in post.Users)
+        {
+          // find specific user from token
+          if (user.Id.Contains(id))
+          {
+
+          }
+        }
+      }
+
+      
       return await allList;
     }
->>>>>>> Stashed changes
   }
 }

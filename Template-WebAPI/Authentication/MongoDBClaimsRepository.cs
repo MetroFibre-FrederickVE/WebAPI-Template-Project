@@ -12,5 +12,15 @@ namespace Template_WebAPI.Authentication
     {
 
     }
+<<<<<<< Updated upstream
+=======
+
+    public async Task<IEnumerable<SecurityClaims>> GetSecurityClaimsAsync(SecurityClaims securityClaims)
+    {
+      var all = _dbCollection.Find(Builders<SecurityClaims>.Filter.Empty);
+      var allList = all.ToListAsync();
+      return await allList;
+    }
+>>>>>>> Stashed changes
   }
 }

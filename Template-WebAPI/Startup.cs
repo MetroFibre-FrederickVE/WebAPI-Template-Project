@@ -88,7 +88,6 @@ namespace Template_WebAPI
       });
 
       services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
-      services.AddSingleton<IClaimsRepository, MongoDBClaimsRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

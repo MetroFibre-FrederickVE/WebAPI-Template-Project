@@ -14,7 +14,7 @@ namespace Template_WebAPI.Authentication
 
     }
 
-    public async Task<SecurityClaims> GetSecurityClaimsAsync(string id)
+    public async Task<string> GetSecurityClaimsAsync(string id)
     {
       // entire collection
       var all = await _dbCollection.Find(Builders<SecurityClaims>.Filter.Empty).ToListAsync();
@@ -28,13 +28,16 @@ namespace Template_WebAPI.Authentication
           // find specific user from token
           if (user.Id.Contains(id))
           {
-
+            // find the role of the user
+            foreach(var role in post.Roles)
+            {
+              return role.RoleName.ToString();
+            }
           }
         }
       }
-
       
-      return await allList;
+      return "";
     }
   }
 }

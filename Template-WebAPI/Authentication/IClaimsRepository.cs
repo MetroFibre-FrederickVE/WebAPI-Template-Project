@@ -5,6 +5,6 @@ namespace Template_WebAPI.Authentication
 {
   public interface IClaimsRepository
   {
-    Task<List<GroupsRole>> GetSecurityClaimsAsync(string id);
+    Task<List<GroupsRole>> GetNewestSecurityClaimsFromDBAsync(string userEntityId);
   }
 }

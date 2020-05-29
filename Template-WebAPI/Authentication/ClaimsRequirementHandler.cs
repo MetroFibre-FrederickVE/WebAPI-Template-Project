@@ -31,22 +31,21 @@ namespace Template_WebAPI.Authentication
           WriteIndented = true
         };
 
-        var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
+        var tokenClaimsToJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
 
-        var grab = await _claimsRepository.GetSecurityClaimsAsync(claimsJsonModel.EntityId.ToString());
+        var listOfNewestGroupRolesFromDB = await _claimsRepository.GetNewestSecurityClaimsFromDBAsync(tokenClaimsToJsonModel.EntityId.ToString());
 
-        List<Groups> groupList = new List<Groups>();
+        List<Groups> listOfGroups = new List<Groups>();
         
-        foreach (var role in grab)
+        foreach (var role in listOfNewestGroupRolesFromDB)
         {
-          var temp = new Groups { EntityId = "", Roles = new GroupsRole[] { new GroupsRole { RoleName = role.RoleName } } };
-          groupList.Add(temp);
+          var generatedGroupsObj = new Groups { EntityId = "Role From DB", Roles = new GroupsRole[] { new GroupsRole { RoleName = role.RoleName } } };
+          listOfGroups.Add(generatedGroupsObj);
         }
 
-        claimsJsonModel.Groups = groupList.ToArray();
+        tokenClaimsToJsonModel.Groups = listOfGroups.ToArray();
 
-
-        foreach (var group in claimsJsonModel.Groups)
+        foreach (var group in tokenClaimsToJsonModel.Groups)
         {
           foreach (var role in group.Roles)
           {

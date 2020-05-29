@@ -7,46 +7,90 @@ namespace Template_WebAPI.Authentication
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string id { get; set; }
-    public UpdatableRole[] roles { get; set; }
-    public string[] projects { get; set; }
-    public User[] users { get; set; }
+    public string Id { get; set; }
+
+    [BsonElement("roles")]
+    public UpdatableRole[] Roles { get; set; }
+
+    [BsonElement("projects")]
+    public string[] Projects { get; set; }
+
+    [BsonElement("users")]
+    public User[] Users { get; set; }
   }
 
   public class UpdatableRole
   {
-    public string id { get; set; }
-    public string roleName { get; set; }
-    public string description { get; set; }
-    public Permissions permissions { get; set; }
+    [BsonElement("id")]
+    public string Id { get; set; }
+
+    [BsonElement("roleName")]
+    public string RoleName { get; set; }
+
+    [BsonElement("description")]
+    public string Description { get; set; }
+
+    [BsonElement("permissions")]
+    public Permissions Permissions { get; set; }
   }
 
   public class Permissions
   {
-    public bool read { get; set; }
-    public bool write { get; set; }
+    [BsonElement("read")]
+    public bool Read { get; set; }
+
+    [BsonElement("write")]
+    public bool Write { get; set; }
   }
 
   public class User
   {
-    public string id { get; set; }
-    public string firstName { get; set; }
-    public string lastName { get; set; }
-    public string email { get; set; }
-    public string[] associatedClientId { get; set; }
-    public UsersLegacydata legacyData { get; set; }
-    public string[] associatedServiceProviderId { get; set; }
-    public string entityId { get; set; }
+    [BsonElement("_id")]
+    public string Id { get; set; }
+
+    [BsonElement("firstName")]
+    public string FirstName { get; set; }
+
+    [BsonElement("lastName")]
+    public string LastName { get; set; }
+
+    [BsonElement("email")]
+    public string Email { get; set; }
+
+    [BsonElement("associatedClientId")]
+    public string[] AssociatedClientId { get; set; }
+
+    [BsonElement("legacyData")]
+    public UsersLegacydata LegacyData { get; set; }
+
+    [BsonElement("associatedServiceProviderId")]
+    public string[] AssociatedServiceProviderId { get; set; }
+
+    [BsonElement("entityId")]
+    public string EntityId { get; set; }
   }
 
   public class UsersLegacydata
   {
+    [BsonElement("UserID")]
     public int UserID { get; set; }
+
+    [BsonElement("Name")]
     public string Name { get; set; }
+
+    [BsonElement("Surname")]
     public string Surname { get; set; }
+
+    [BsonElement("Email")]
     public string Email { get; set; }
-    public object password { get; set; }
+
+    [BsonElement("password")]
+    public object Password { get; set; }
+
+    [BsonElement("ClientID")]
     public object ClientID { get; set; }
-    public object passwordHashed { get; set; }
+
+    [BsonElement("passwordHashed")]
+    public object PasswordHashed { get; set; }
   }
 }

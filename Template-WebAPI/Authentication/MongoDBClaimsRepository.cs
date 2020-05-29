@@ -21,9 +21,9 @@ namespace Template_WebAPI.Authentication
 
       foreach (var doc in allDocumentsContainingUser)
       {
-        foreach (var role in doc.roles)
+        foreach (var role in doc.Roles)
         {
-          groupsRolesObjList.Add(new GroupsRole { RoleName = role.roleName });
+          groupsRolesObjList.Add(new GroupsRole { RoleName = role.RoleName });
         }
       }
 

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace Template_WebAPI.Authentication
 {
@@ -34,17 +33,18 @@ namespace Template_WebAPI.Authentication
 
         var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
 
-        //
         var grab = await _claimsRepository.GetSecurityClaimsAsync(claimsJsonModel.EntityId.ToString());
 
-        // replace elements in fields within claimsJsonModels
+        List<Groups> groupList = new List<Groups>();
         
-        //foreach(var role in grab)
-        //{
-        //  claimsJsonModel.Groups.Append(new Groups { EntityId = "", Roles = new GroupsRole[] { new GroupsRole { RoleName = role.RoleName } } });
-        //}
+        foreach (var role in grab)
+        {
+          var temp = new Groups { EntityId = "", Roles = new GroupsRole[] { new GroupsRole { RoleName = role.RoleName } } };
+          groupList.Add(temp);
+        }
 
-        //
+        claimsJsonModel.Groups = groupList.ToArray();
+
 
         foreach (var group in claimsJsonModel.Groups)
         {
@@ -53,17 +53,16 @@ namespace Template_WebAPI.Authentication
             if (role.RoleName.ToString().Contains(policyRequirment))
             {
               context.Succeed(policyRequirement);
-              //break;
-              return;// Task.CompletedTask;
+              return;
             }
           }
         }
       }
       catch
       {
-        return;// Task.CompletedTask;
+        return;
       }
-      return;// Task.CompletedTask;
+      return;
     }
   }
 

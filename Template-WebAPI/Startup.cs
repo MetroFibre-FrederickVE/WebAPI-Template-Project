@@ -15,6 +15,9 @@ using Template_WebAPI.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 
 namespace Template_WebAPI
 {
@@ -27,7 +30,6 @@ namespace Template_WebAPI
 
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
@@ -45,12 +47,10 @@ namespace Template_WebAPI
       services.AddHostedService<TemplateDraftUploadDirCleaner>();
       services.AddSingleton<IEventSourceManager, EventSourceManager>();
       services.AddSingleton<IEventSourceRepository, MongoDBEventSourceRepository>();
+      services.AddHttpContextAccessor();
 
-      var appSettingsSection = Configuration.GetSection("AppSettings");
-      services.Configure<AppSettings>(appSettingsSection);
-
-      var appSettings = appSettingsSection.Get<AppSettings>();
-      var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+      var authenticationEnvironmentVariable = Environment.GetEnvironmentVariable("JWT_SECRET");
+      var key = Encoding.ASCII.GetBytes(authenticationEnvironmentVariable);
       services.AddAuthentication(x =>
       {
         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,10 +71,26 @@ namespace Template_WebAPI
           };
         });
 
-      // Add new service here: (userService)
+      services.AddSingleton<IClaimsRepository, MongoDBClaimsRepository>();
+      
+      services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
+
+      var applicationOptions = Configuration
+        .GetSection("ApplicationOptions")
+        .Get<ApplicationOptions>();
+
+      services.AddAuthorization((options_CV) => {
+        options_CV.AddPolicy("CustomClaimsPolicy - Authorization: Class Viewer", policy =>
+        {
+          policy.RequireAuthenticatedUser();
+          
+          policy.Requirements.Add(new ClaimsRequirment("Class Viewer"));
+        });
+      });
+
+      services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       app.UseCors("ApiCorsPolicy");

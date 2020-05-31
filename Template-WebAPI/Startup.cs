@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Client;
+using MPU.MicroServices.StandardLibrary.CloudMessaging;
 
 namespace Template_WebAPI
 {
@@ -71,8 +72,11 @@ namespace Template_WebAPI
           };
         });
 
+      //
+      //services.AddSingleton<AWSMessageService>();
+
       services.AddSingleton<IClaimsRepository, MongoDBClaimsRepository>();
-      
+
       services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
 
       var applicationOptions = Configuration

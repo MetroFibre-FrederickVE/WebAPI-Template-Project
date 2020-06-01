@@ -1,7 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.SimpleNotificationService;
-using Amazon.SQS;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MPU.MicroServices.StandardLibrary.CloudMessaging;
 using System;
@@ -17,46 +14,12 @@ namespace Template_WebAPI.Authentication
 {
   public class MongoDBClaimsRepository : BaseRepository<SecurityClaims>, IClaimsRepository
   {
-    
-    private readonly ICloudMessageBus cloudMessageBus;
-
-    public MongoDBClaimsRepository(IMongoContext context, ICloudMessageBus cloudMessageBus) : base(context)
+    public MongoDBClaimsRepository(IMongoContext context) : base(context)
     {
-      this.cloudMessageBus = cloudMessageBus;
-    }
-
-    public async Task securityClaimsReturnValue(SecurityClaims security)
-    {
-      await Task.Delay(1000);
-    }
-
-    public async Task UpdateDBFromSQSMessageBody()
-    {
-      CancellationTokenSource cts = new CancellationTokenSource();
-      CancellationToken token = cts.Token;
-
-      //
-      //Func<SecurityClaims, Task> func = sc => Task.FromResult(sc) ;
-
-      await cloudMessageBus.StartQueueSubscription<SecurityClaims>("UpdateSecurityClaims", securityClaimsReturnValue, token);
-
-      // MessageBody-TO-Document in Collection
-
-      // func?
-      //var idFromMessage = await func.messageBody.Id;
-      //var bodyFromMessage = await func.messageBody;
-
-      // Loop through all documents?
-      //var objectId = new ObjectId(idFromMessage);
-      //await _dbCollection.UpdateOneAsync(Builders<SecurityClaims>.Filter.Eq("_id", objectId), bodyFromMessage);
-
     }
 
     public async Task<List<GroupsRole>> GetNewestSecurityClaimsFromDBAsync(string userEntityId)
     {
-      // 
-      await UpdateDBFromSQSMessageBody();
-
       var allDocumentsContainingUser = await _dbCollection.Find(new BsonDocument("users._id", userEntityId)).ToListAsync();
 
       var groupsRolesObjList = new List<GroupsRole>();
@@ -70,6 +33,15 @@ namespace Template_WebAPI.Authentication
       }
 
       return groupsRolesObjList;
+    }
+
+    public async Task UpdateAsync(string id, SecurityClaims obj)
+    {
+      //
+      UpdateDefinition<SecurityClaims> update = new UpdateDefinition<SecurityClaims>(obj);
+      //
+      var objectId = new ObjectId(id);
+      await _dbCollection.UpdateOneAsync(Builders<SecurityClaims>.Filter.Eq("_id", objectId), update);
     }
   }
 }

@@ -1,13 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MPU.MicroServices.StandardLibrary.CloudMessaging;
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
-using Template_WebAPI.Manager;
 using Template_WebAPI.Repository;
 
 namespace Template_WebAPI.Authentication
@@ -35,13 +29,9 @@ namespace Template_WebAPI.Authentication
       return groupsRolesObjList;
     }
 
-    public async Task UpdateAsync(string id, SecurityClaims obj)
+    public async Task UpdateSecurityClaimsGroupsInDbAsync(string id, SecurityClaims obj)
     {
-      //
-      UpdateDefinition<SecurityClaims> update = new UpdateDefinition<SecurityClaims>(obj);
-      //
-      var objectId = new ObjectId(id);
-      await _dbCollection.UpdateOneAsync(Builders<SecurityClaims>.Filter.Eq("_id", objectId), update);
+      await _dbCollection.FindOneAndReplaceAsync((sc => sc.Id == id), obj);
     }
   }
 }

@@ -78,10 +78,13 @@ namespace Template_WebAPI
           };
         });
 
-
       services.AddSingleton<ICloudMessageBus, AWSMessageService>();
 
       services.AddSingleton<IClaimsRepository, MongoDBClaimsRepository>();
+
+      services.AddSingleton<IClaimsManager, ClaimsManager>();
+
+      services.AddHostedService<ClaimsManager>();
 
       services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
 

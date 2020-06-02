@@ -1,13 +1,12 @@
-﻿using MPU.MicroServices.StandardLibrary.CloudMessaging;
+﻿using Microsoft.Extensions.Hosting;
+using MPU.MicroServices.StandardLibrary.CloudMessaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Template_WebAPI.Authentication
 {
-  public class ClaimsManager
+  public class ClaimsManager : BackgroundService, IClaimsManager
   {
     private readonly ICloudMessageBus cloudMessageBus;
     private readonly IClaimsRepository claimsRepository;
@@ -18,23 +17,38 @@ namespace Template_WebAPI.Authentication
       this.claimsRepository = claimsRepository;
     }
 
-    // FUNC
-    public async Task securityClaimsReturnValue(SecurityClaims security)
+    public async Task securityClaimsReturnValue(SQSUpdatedClaims SQSMessage)
     {
-      // Expand to execute update
-
-      
-
-      await claimsRepository.UpdateAsync(security.Id, security);
+      try
+      {
+        var securityClaims = SQSMessage.UpdatedSecurityGroupProjectClaims;
+        await claimsRepository.UpdateSecurityClaimsGroupsInDbAsync(securityClaims.Id, securityClaims);
+      }
+      catch
+      {
+        Console.WriteLine("Failed to update DB with SQS Message value.");
+      }
     }
 
     public async Task UpdateDBFromSQSMessageBody()
     {
       CancellationTokenSource cts = new CancellationTokenSource();
       CancellationToken token = cts.Token;
+      if (!token.IsCancellationRequested)
+      {
+        await cloudMessageBus.StartQueueSubscription<SQSUpdatedClaims>("UpdateSecurityClaims", securityClaimsReturnValue, token);
+        //cts.Cancel(); // ?
+      }
+      //cts.Cancel(); // ?
+    }
 
-      await cloudMessageBus.StartQueueSubscription<SecurityClaims>("UpdateSecurityClaims", securityClaimsReturnValue, token);
-
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+      while (!stoppingToken.IsCancellationRequested)
+      {
+        await UpdateDBFromSQSMessageBody();
+        await Task.Delay(TimeSpan.FromMinutes(30));
+      }
     }
   }
 }

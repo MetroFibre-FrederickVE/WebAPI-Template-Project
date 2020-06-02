@@ -9,10 +9,12 @@ namespace Template_WebAPI.Authentication
   internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirment>
   {
     private readonly IClaimsRepository _claimsRepository;
+    private readonly IClaimsManager claimsManager;
 
-    public ClaimsRequirementHandler(IClaimsRepository claimsRepository)
+    public ClaimsRequirementHandler(IClaimsRepository claimsRepository, IClaimsManager claimsManager)
     {
       _claimsRepository = claimsRepository;
+      this.claimsManager = claimsManager;
     }
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
@@ -32,6 +34,8 @@ namespace Template_WebAPI.Authentication
         };
 
         var tokenClaimsToJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
+
+        //await claimsManager.UpdateDBFromSQSMessageBody(); // Direct call to DB updater
 
         var listOfNewestGroupRolesFromDB = await _claimsRepository.GetNewestSecurityClaimsFromDBAsync(tokenClaimsToJsonModel.EntityId.ToString());
 

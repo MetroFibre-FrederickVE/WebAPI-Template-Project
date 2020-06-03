@@ -29,9 +29,17 @@ namespace Template_WebAPI.Authentication
       return groupsRolesObjList;
     }
 
-    public async Task UpdateSecurityClaimsGroupsInDbAsync(string id, SecurityClaims obj)
+    public async Task UpdateSecurityClaimsGroupsInDbAsync(string claimsGroupId, SecurityClaims newSecurityClaims)
     {
-      await _dbCollection.FindOneAndReplaceAsync((sc => sc.Id == id), obj);
+      var dbIterator = await _dbCollection.FindAsync(o => o.Id == claimsGroupId);
+      if (await dbIterator.AnyAsync() == true)
+      {
+        await _dbCollection.FindOneAndReplaceAsync((sc => sc.Id == claimsGroupId), newSecurityClaims);
+      }
+      else
+      {
+        await _dbCollection.InsertOneAsync(newSecurityClaims);
+      }
     }
   }
 }

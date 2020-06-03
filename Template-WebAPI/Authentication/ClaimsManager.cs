@@ -19,36 +19,13 @@ namespace Template_WebAPI.Authentication
 
     public async Task securityClaimsReturnValue(SQSUpdatedClaims SQSMessage)
     {
-      try
-      {
-        var securityClaims = SQSMessage.UpdatedSecurityGroupProjectClaims;
-        await claimsRepository.UpdateSecurityClaimsGroupsInDbAsync(securityClaims.Id, securityClaims);
-      }
-      catch
-      {
-        Console.WriteLine("Failed to update DB with SQS Message value.");
-      }
-    }
-
-    public async Task UpdateDBFromSQSMessageBody()
-    {
-      CancellationTokenSource cts = new CancellationTokenSource();
-      CancellationToken token = cts.Token;
-      if (!token.IsCancellationRequested)
-      {
-        await cloudMessageBus.StartQueueSubscription<SQSUpdatedClaims>("UpdateSecurityClaims", securityClaimsReturnValue, token);
-        //cts.Cancel(); // ?
-      }
-      //cts.Cancel(); // ?
+      var securityClaims = SQSMessage.UpdatedSecurityGroupProjectClaims;
+      await claimsRepository.UpdateSecurityClaimsGroupsInDbAsync(securityClaims.Id, securityClaims);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-      while (!stoppingToken.IsCancellationRequested)
-      {
-        await UpdateDBFromSQSMessageBody();
-        await Task.Delay(TimeSpan.FromMinutes(30));
-      }
+      await cloudMessageBus.StartQueueSubscription<SQSUpdatedClaims>("UpdateSecurityClaims", securityClaimsReturnValue, stoppingToken);
     }
   }
 }

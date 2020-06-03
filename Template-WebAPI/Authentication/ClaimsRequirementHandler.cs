@@ -35,8 +35,6 @@ namespace Template_WebAPI.Authentication
 
         var tokenClaimsToJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
 
-        //await claimsManager.UpdateDBFromSQSMessageBody(); // Direct call to DB updater
-
         var listOfNewestGroupRolesFromDB = await _claimsRepository.GetNewestSecurityClaimsFromDBAsync(tokenClaimsToJsonModel.EntityId.ToString());
 
         List<Groups> listOfGroups = new List<Groups>();

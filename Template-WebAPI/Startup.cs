@@ -18,6 +18,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Client;
+using MPU.MicroServices.StandardLibrary.CloudMessaging;
+using Amazon.SQS;
+using Amazon.SimpleNotificationService;
+using MPU.MicroServices.StandardLibrary.EnvironmentService;
 
 namespace Template_WebAPI
 {
@@ -38,6 +42,9 @@ namespace Template_WebAPI
       }));
       services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
       services.AddAWSService<IAmazonS3>();
+      services.AddAWSService<IAmazonSQS>();
+      services.AddAWSService<IAmazonSimpleNotificationService>();
+      services.AddSingleton<IEnvironmentService, CloudEnvironmentService>();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
       services.AddSingleton<IMongoContext, MongoContext>();
       services.AddSingleton<ITemplateManager, TemplateManager>();
@@ -71,8 +78,14 @@ namespace Template_WebAPI
           };
         });
 
+      services.AddSingleton<ICloudMessageBus, AWSMessageService>();
+
       services.AddSingleton<IClaimsRepository, MongoDBClaimsRepository>();
-      
+
+      services.AddSingleton<IClaimsManager, ClaimsManager>();
+
+      services.AddHostedService<ClaimsManager>();
+
       services.Configure<ApplicationOptions>(Configuration.GetSection("ApplicationOptions"));
 
       var applicationOptions = Configuration

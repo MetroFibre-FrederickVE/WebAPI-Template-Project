@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace Template_WebAPI.Authentication
 {
@@ -7,6 +8,7 @@ namespace Template_WebAPI.Authentication
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
+    [JsonProperty("_id")]
     public string Id { get; set; }
 
     [BsonElement("roles")]

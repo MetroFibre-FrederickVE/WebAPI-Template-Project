@@ -9,10 +9,12 @@ namespace Template_WebAPI.Authentication
   internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirment>
   {
     private readonly IClaimsRepository _claimsRepository;
+    private readonly IClaimsManager claimsManager;
 
-    public ClaimsRequirementHandler(IClaimsRepository claimsRepository)
+    public ClaimsRequirementHandler(IClaimsRepository claimsRepository, IClaimsManager claimsManager)
     {
       _claimsRepository = claimsRepository;
+      this.claimsManager = claimsManager;
     }
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)

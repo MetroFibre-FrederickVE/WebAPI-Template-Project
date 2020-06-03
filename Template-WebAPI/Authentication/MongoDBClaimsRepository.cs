@@ -10,7 +10,6 @@ namespace Template_WebAPI.Authentication
   {
     public MongoDBClaimsRepository(IMongoContext context) : base(context)
     {
-
     }
 
     public async Task<List<GroupsRole>> GetNewestSecurityClaimsFromDBAsync(string userEntityId)
@@ -28,6 +27,19 @@ namespace Template_WebAPI.Authentication
       }
 
       return groupsRolesObjList;
+    }
+
+    public async Task UpdateSecurityClaimsGroupsInDbAsync(string claimsGroupId, SecurityClaims newSecurityClaims)
+    {
+      var dbIterator = await _dbCollection.FindAsync(o => o.Id == claimsGroupId);
+      if (await dbIterator.AnyAsync() == true)
+      {
+        await _dbCollection.FindOneAndReplaceAsync((sc => sc.Id == claimsGroupId), newSecurityClaims);
+      }
+      else
+      {
+        await _dbCollection.InsertOneAsync(newSecurityClaims);
+      }
     }
   }
 }

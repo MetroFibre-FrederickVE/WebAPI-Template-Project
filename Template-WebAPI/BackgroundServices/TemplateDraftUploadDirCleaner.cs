@@ -10,17 +10,24 @@ namespace Template_WebAPI
   {
     public void ClearDraftDir()
     {
-      var directoryName = Path.Combine("Resources", "File");
-      var pathToDirectory = Path.Combine(Directory.GetCurrentDirectory(), directoryName);
-      string[] files = Directory.GetFiles(pathToDirectory);
 
-      foreach (string file in files)
+      var resourcesDir = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+      var pathToDirectory = Path.Combine(resourcesDir, "File");
+
+      DirectoryInfo di = Directory.CreateDirectory(resourcesDir);
+
+      if (Directory.Exists(resourcesDir) && Directory.Exists(pathToDirectory))
       {
-        FileInfo fileInfo = new FileInfo(file);
+        string[] files = Directory.GetFiles(pathToDirectory);
 
-        if (fileInfo.CreationTime < DateTime.Now.AddMinutes(-60))
+        foreach (string file in files)
         {
-          fileInfo.Delete();
+          FileInfo fileInfo = new FileInfo(file);
+
+          if (fileInfo.CreationTime < DateTime.Now.AddMinutes(-60))
+          {
+            fileInfo.Delete();
+          }
         }
       }
     }

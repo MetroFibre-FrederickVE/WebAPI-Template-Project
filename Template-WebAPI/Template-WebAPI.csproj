@@ -28,6 +28,6 @@
     <None Remove="Resources\File\3E298DE435C1F8B0BC7900F231F71CE789329D10.torrent" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Onyx_projects\MicroServiceLibrary\MPU.MicroServices.StandardLibrary\MPU.MicroServices.StandardLibrary.csproj" />
+    <ProjectReference Include="..\MicroServiceLibrary\MPU.MicroServices.StandardLibrary\MPU.MicroServices.StandardLibrary.csproj" />
   </ItemGroup>
 </Project>

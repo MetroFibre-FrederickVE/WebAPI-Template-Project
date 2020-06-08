@@ -31,7 +31,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGO_CONNECTION_STRING": "localhost",
-        "AWS_S3_BUCKET_NAME": "gsi-templates",
+        "AWS_S3_BUCKET_NAME": "firsttempbucket",
         "AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES": "120",
         "JWT_SECRET": "qwertyuiopasdfghjklzxcvbnm123456",
         "SNS_ATTACHMENT_BUCKET_NAME": "",

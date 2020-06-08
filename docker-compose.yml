@@ -29,7 +29,7 @@ services:
   #     - "backend"
   template-service:
     privileged: true
-    image: "coretemplateapi:v8"
+    image: "coretemplateapi:v10"
     restart: always
     expose:
       - "80"
@@ -38,7 +38,7 @@ services:
     environment:
       MONGO_CONNECTION_STRING: "mongo"
       ASPNETCORE_ENVIRONMENT: "Development"
-      AWS_S3_BUCKET_NAME: "gsi-templates"
+      AWS_S3_BUCKET_NAME: "firsttempbucket"
       AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES: "120"
       JWT_SECRET: "qwertyuiopasdfghjklzxcvbnm123456"
       SNS_ATTACHMENT_BUCKET_NAME: ""

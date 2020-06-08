@@ -29,7 +29,7 @@ services:
   #     - "backend"
   template-service:
     privileged: true
-    image: "coretemplateapi:v7"
+    image: "coretemplateapi:v8"
     restart: always
     expose:
       - "80"

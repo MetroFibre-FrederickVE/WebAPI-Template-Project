@@ -24,6 +24,7 @@ namespace Template_WebAPI.Authentication
   public class UpdatableRole
   {
     [BsonElement("id")]
+    [JsonProperty("_id")]
     public string Id { get; set; }
 
     [BsonElement("roleName")]
@@ -48,6 +49,7 @@ namespace Template_WebAPI.Authentication
   public class User
   {
     [BsonElement("_id")]
+    [JsonProperty("_id")]
     public string Id { get; set; }
 
     [BsonElement("firstName")]

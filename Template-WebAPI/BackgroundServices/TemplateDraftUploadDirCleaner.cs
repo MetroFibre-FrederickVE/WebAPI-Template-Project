@@ -13,7 +13,6 @@ namespace Template_WebAPI
 
       var resourcesDir = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
       var pathToDirectory = Path.Combine(resourcesDir, "File");
-      Directory.CreateDirectory(pathToDirectory);
 
       if (Directory.Exists(resourcesDir) && Directory.Exists(pathToDirectory))
       {

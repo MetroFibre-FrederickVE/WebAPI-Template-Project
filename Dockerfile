@@ -20,4 +20,5 @@ FROM base AS final
 WORKDIR /app
 
 COPY --from=publish /app .
+RUN mkdir -p Resources/File
 ENTRYPOINT ["dotnet", "Template-WebAPI.dll"]

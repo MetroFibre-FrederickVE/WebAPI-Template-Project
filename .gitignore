@@ -388,7 +388,7 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
-Template-WebAPI/Resources
+#Template-WebAPI/Resources
 Template-WebAPI/obj
 Template-WebAPI/bin
 .vs/Template-WebAPI/xs

@@ -24,7 +24,6 @@ namespace Template_WebAPI.Manager
     {
       var folderName = Path.Combine("Resources", "File");
       var pathToTemplateFile = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-      Directory.CreateDirectory(pathToTemplateFile);
       var fileName = Path.Combine(pathToTemplateFile,$"{template.Id}");
       var fileTransferUtility = new TransferUtility(awsS3);
       await fileTransferUtility.UploadAsync(fileName, bucketName);

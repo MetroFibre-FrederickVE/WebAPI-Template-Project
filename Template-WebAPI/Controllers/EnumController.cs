@@ -20,7 +20,7 @@ namespace Template_WebAPI.Controllers
       _enumExtensions = enumExtensions;
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpGet]
     [Route("sensor")]
     public ActionResult<IEnumerable<Sensor>> GetSensorAsync()
@@ -28,7 +28,7 @@ namespace Template_WebAPI.Controllers
       return Ok(_enumExtensions.GetValues<Sensor>());
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpGet]
     [Route("processlevel")]
     public ActionResult<IEnumerable<ProcessLevel>> GetProcessAsync()

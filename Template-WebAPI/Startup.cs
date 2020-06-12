@@ -93,7 +93,7 @@ namespace Template_WebAPI
         .Get<ApplicationOptions>();
 
       services.AddAuthorization((options_CV) => {
-        options_CV.AddPolicy("CustomClaimsPolicy - Authorization: Class Viewer", policy =>
+        options_CV.AddPolicy("CustomClaimsPolicy - Class Viewer", policy =>
         {
           policy.RequireAuthenticatedUser();
           

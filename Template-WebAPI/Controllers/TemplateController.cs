@@ -23,7 +23,7 @@ namespace Template_WebAPI.Controllers
       this.cloudFileManager = cloudFileManager;
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Template>>> GetAllAsync()
     {
@@ -31,7 +31,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<IEnumerable<Template>>(templates, HttpMethod.Get);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpGet("{templateId:length(24)}", Name = "GetTemplate")]
     public async Task<ActionResult<Template>> GetUsingIdAsync(string templateId)
     {
@@ -39,7 +39,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(templateResult, HttpMethod.Get);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpGet]
     [Route("{templateId}/signedurl")]
     public async Task<ActionResult<string>> GetPresignedURLAsync(string templateId)
@@ -48,7 +48,7 @@ namespace Template_WebAPI.Controllers
       return Ok(signedURL);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpPut("{templateId:length(24)}")]
     public async Task<ActionResult<Template>> UpdateAsync(Template templateIn, string templateId)
     {
@@ -56,7 +56,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(createResult, HttpMethod.Put);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpPost]
     public async Task<ActionResult<Template>> CreateAsync(Template template)
     {
@@ -64,7 +64,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(createResult, HttpMethod.Post);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpPost]
     [Route("{templateId}/project")]
     [Route("{templateId}/project/{projectId}")]
@@ -74,7 +74,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpPost]
     [Route("{templateId}/project/batch")]
     public async Task<ActionResult<Template>> CreateProjectAssociationAsync(string templateId, List<string> projectIds)
@@ -93,7 +93,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(updatedTemplateResult, HttpMethod.Post);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpPost]
     [Route("{templateId}/input/batch")]
     public async Task<ActionResult<List<TemplateInputMapping>>> CreateTemplateInputAsync(string templateId, List<TemplateInputMapping> templateInputs)
@@ -112,7 +112,7 @@ namespace Template_WebAPI.Controllers
       return Ok(retVal);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpPost]
     [Route("file")]
     [HttpPost, DisableRequestSizeLimit]
@@ -123,7 +123,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(projectAssociationResult, HttpMethod.Post);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpDelete("{templateId:length(24)}")]
     public async Task<ActionResult<Template>> DeleteByIdAsync(string templateId)
     {
@@ -131,7 +131,7 @@ namespace Template_WebAPI.Controllers
       return HandInvalidRequest<Template>(deleteResult, HttpMethod.Delete);
     }
 
-    [Authorize(Policy = "CustomClaimsPolicy - Authorization: Class Viewer")]
+    [Authorize(Policy = "CustomClaimsPolicy - Class Viewer")]
     [HttpDelete]    
     [Route("{templateId}/project/{projectId}")]
     public async Task<ActionResult<Template>> DeleteProjectIdAsync(string templateId, string projectId)

@@ -13,7 +13,11 @@ namespace Template_WebAPI.Manager
     private string bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
     private DateTime experationTime;
 
-    private readonly IAmazonS3 awsS3;
+    private readonly IAmazonS3 awsS3 = new AmazonS3Client(new AmazonS3Config
+    {
+      Timeout = TimeSpan.FromMinutes(5),            // Default value is 100 seconds
+      ReadWriteTimeout = TimeSpan.FromMinutes(5)    // Default value is 300 seconds
+    });
 
     public AWSCloudFileManager(IAmazonS3 s3Client)
     {

@@ -1,20 +1,20 @@
 version: "3.1"
 services:
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    ports:
-      - "27017:27017"
-    volumes:
-      #- type: volume
-      #  source: mongodb_data_volume
-      #  target: /data/db
-      - "mongodb_data_volume:/data/db"
-    networks:
-      - "backend"
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     #- type: volume
+  #     #  source: mongodb_data_volume
+  #     #  target: /data/db
+  #     - "mongodb_data_volume:/data/db"
+  #   networks:
+  #     - "backend"
   # mongo-express:
   #   image: mongo-express
   #   restart: always
@@ -29,14 +29,15 @@ services:
   #     - "backend"
   template-service:
     privileged: true
-    image: "coretemplateapi:v18"
+    image: "core-template-api:v2"
     restart: always
     expose:
       - "80"
     ports:
-      - "5009:80"
+      #- "5009:80"
+      - "80"
     environment:
-      MONGO_CONNECTION_STRING: "mongo"
+      MONGO_CONNECTION_STRING: "mongodb+srv://templateAPI-user:XHgzzHySWCYIUzKl@examplemongocluster-id0lh.mongodb.net/TemplateAPIDB"
       ASPNETCORE_ENVIRONMENT: "Development"
       AWS_S3_BUCKET_NAME: "firsttempbucket"
       AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES: "120"
@@ -48,17 +49,17 @@ services:
       SQS_QUEUE_PREFIX: "https://sqs.us-west-2.amazonaws.com/494051244674/default_"
       MPU_NAME: ""
       AWS_ENVIRONMENT: ""
-    links:
-      - "mongo:mongo"
+    # links:
+    #   - "mongo:mongo"
     networks:
       - "backend"
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo
     volumes:
       - ~TKK/.aws/config:/root/.aws/config
       - ~TKK/.aws/credentials:/root/.aws/credentials
 networks:
   backend:
-volumes: 
-  mongodb_data_volume:
-    external: true
+# volumes: 
+#   mongodb_data_volume:
+#     external: true

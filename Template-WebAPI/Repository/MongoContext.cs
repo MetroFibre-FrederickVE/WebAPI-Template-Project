@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Clusters;
 using System;
 
 namespace Template_WebAPI.Repository
@@ -16,21 +17,24 @@ namespace Template_WebAPI.Repository
 
       var connectionString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING");
       
-      var mongodbCredentials = MongoCredential.CreateCredential(databaseName: _configuration["TemplateDatabaseSettings: DatabaseName"], username: "root",password: "example");
+      var mongodbCredentials = MongoCredential.CreateCredential(databaseName: _configuration["TemplateDatabaseSettings: DatabaseName"], username: "templateAPI-user",password: "XHgzzHySWCYIUzKl");
 
       // Connection Pooling settings
-      var settings = new MongoClientSettings();
-      settings.MaxConnectionPoolSize = 100;
-      settings.MinConnectionPoolSize = 1;
-      settings.MaxConnectionIdleTime = new TimeSpan(0, 1, 0);
-      settings.WaitQueueTimeout = new TimeSpan(0, 1, 0);
-      settings.Server = new MongoServerAddress(connectionString);
-      settings.Credential = mongodbCredentials;
-      
+      //var settings = new MongoClientSettings();
+      //settings.MaxConnectionPoolSize = 100;
+      //settings.MinConnectionPoolSize = 1;
+      //settings.MaxConnectionIdleTime = new TimeSpan(0, 1, 0);
+      //settings.WaitQueueTimeout = new TimeSpan(0, 1, 0);
+      //settings.Server = new MongoServerAddress(connectionString);
+      //settings.Credential = mongodbCredentials;
+      //settings.ConnectionMode = ConnectionMode.ReplicaSet;
+      //settings.Scheme = MongoDB.Driver.Core.Configuration.ConnectionStringScheme.MongoDBPlusSrv;
+      //_mongoClient = new MongoClient(settings);
 
-      // Configuration to be injected later
-      // Currently using testable local DB
-      _mongoClient = new MongoClient(settings);
+      // connection pooling has to be extended to accomodate atlas connection
+      // as localhost settings causes issues with the connection
+      _mongoClient = new MongoClient(connectionString);
+
       _db = _mongoClient.GetDatabase(_configuration["TemplateDatabaseSettings:DatabaseName"]);
     }
 

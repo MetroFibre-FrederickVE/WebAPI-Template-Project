@@ -30,7 +30,7 @@
       "launchUrl": "templatemanagement/v1/template",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "MONGO_CONNECTION_STRING": "localhost",
+        "MONGO_CONNECTION_STRING": "mongodb+srv://templateAPI-user:XHgzzHySWCYIUzKl@examplemongocluster-id0lh.mongodb.net/TemplateAPIDB",
         "AWS_S3_BUCKET_NAME": "firsttempbucket",
         "AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES": "120",
         "JWT_SECRET": "qwertyuiopasdfghjklzxcvbnm123456",

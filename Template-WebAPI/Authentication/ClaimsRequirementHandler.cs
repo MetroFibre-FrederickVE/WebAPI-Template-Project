@@ -8,7 +8,16 @@ namespace Template_WebAPI.Authentication
 {
   internal class ClaimsRequirementHandler : AuthorizationHandler<ClaimsRequirment>
   {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
+    private readonly IClaimsRepository _claimsRepository;
+    private readonly IClaimsManager claimsManager;
+
+    public ClaimsRequirementHandler(IClaimsRepository claimsRepository, IClaimsManager claimsManager)
+    {
+      _claimsRepository = claimsRepository;
+      this.claimsManager = claimsManager;
+    }
+
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimsRequirment policyRequirement)
     {
       try
       {
@@ -24,25 +33,37 @@ namespace Template_WebAPI.Authentication
           WriteIndented = true
         };
 
-        var claimsJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
+        var tokenClaimsToJsonModel = JsonSerializer.Deserialize<ClaimsFromToken>(claimsValue, options);
 
-        foreach (var group in claimsJsonModel.Groups)
+        var listOfNewestGroupRolesFromDB = await _claimsRepository.GetNewestSecurityClaimsFromDBAsync(tokenClaimsToJsonModel.EntityId.ToString());
+
+        List<Groups> listOfGroups = new List<Groups>();
+        
+        foreach (var role in listOfNewestGroupRolesFromDB)
+        {
+          var generatedGroupsObj = new Groups { EntityId = "Role From DB", Roles = new GroupsRole[] { new GroupsRole { RoleName = role.RoleName } } };
+          listOfGroups.Add(generatedGroupsObj);
+        }
+
+        tokenClaimsToJsonModel.Groups = listOfGroups.ToArray();
+
+        foreach (var group in tokenClaimsToJsonModel.Groups)
         {
           foreach (var role in group.Roles)
           {
             if (role.RoleName.ToString().Contains(policyRequirment))
             {
               context.Succeed(policyRequirement);
-              return Task.CompletedTask;
+              return;
             }
           }
         }
       }
       catch
       {
-        return Task.CompletedTask;
+        return;
       }
-      return Task.CompletedTask;
+      return;
     }
   }
 

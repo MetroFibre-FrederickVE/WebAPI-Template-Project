@@ -31,14 +31,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGO_CONNECTION_STRING": "localhost",
-        "AWS_S3_BUCKET_NAME": "firsttempbucket",
+        "AWS_S3_BUCKET_NAME": "",
         "AWS_S3_PRESIGNED_URL_EXPERATION_TIME_MINUTES": "120",
         "JWT_SECRET": "qwertyuiopasdfghjklzxcvbnm123456",
         "SNS_ATTACHMENT_BUCKET_NAME": "",
         "CONNECTIVITY_CONFIRMATION_TOPIC_NAME": " ",
         "SNS_ARN_PREFIX": "",
-        "SQS_ARN_PREFIX": "arn:aws:sqs:us-west-2:494051244674:default_",
-        "SQS_QUEUE_PREFIX": "https://sqs.us-west-2.amazonaws.com/494051244674/default_",
+        "SQS_ARN_PREFIX": "",
+        "SQS_QUEUE_PREFIX": "",
         "AWS_ENVIRONMENT": "",
         "MPU_NAME": ""
 
